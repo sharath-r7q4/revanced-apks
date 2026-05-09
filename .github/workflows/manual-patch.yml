@@ -14,11 +14,10 @@ on:
         default: 'Morphe'
         type: choice
         options:
+          - 'All'
           - 'Morphe YouTube'
           - 'piko X'
           - 'piko Instagram'
-          - 'hoo-dles Prime Video'
-          - 'All'
   workflow_call:
     inputs:
       org:
