@@ -14,26 +14,9 @@ on:
         default: 'Morphe'
         type: choice
         options:
-          - 'Morphe'
           - 'Morphe Beta'
-          - 'RVE-anddea-stable'
-          - 'RVE-anddea-beta'
-          - 'Twitter Piko Stable'
           - 'Twitter Piko Beta'
-          - 'DeRevanced'
-          - 'Paresh'
           - 'hoo-dles'
-          - 'BiliRoamingM'
-          - 'Scrazzz Patches'
-          - 'Dropped Patches - indrastorms'
-          - 'Revanced Experiments'
-          - 'Revanced'
-          - 'Revanced Beta'
-          - 'Revanced Extended'
-          - 'Revanced Extended Beta'
-          - 'Revanced Extended Arsclib'
-          - 'Revanced Extended Android 6,7'
-          - 'Revanced Extended Android 5'
   workflow_call:
     inputs:
       org:
@@ -46,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        run: [1, 2, 3]
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
@@ -59,7 +40,7 @@ jobs:
       - name: Patch apk
         id: patch-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
-        run: bash src/build/morphe.sh ${{ matrix.run }}
+        run: bash src/build/build.sh "morphe-patches" "MorpheApp" "com.google.android.youtube" "youtube" "google-inc/youtube/youtube" 
       - name: Releasing APK files
         id: release-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
