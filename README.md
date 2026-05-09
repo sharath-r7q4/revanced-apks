@@ -1,25 +1,27 @@
 ### Actively Used Libraries
-##Morphe
+
+## Morphe
 
 [Patches](https://github.com/MorpheApp/morphe-patches) - [GPL-3.0](https://github.com/MorpheApp/morphe-patches/blob/main/LICENSE)
 
 [CLI](https://github.com/MorpheApp/morphe-cli) - [GPL-3.0](https://github.com/MorpheApp/morphe-cli/blob/main/LICENSE)
 
 
-##Crimera
+## Crimera
 
 [Patches](https://github.com/crimera/piko) - [GPL-3.0](https://github.com/crimera/piko/blob/main/LICENSE)
 
 
-##Standalone
+## Standalone
 
 [pup](https://github.com/ericchiang/pup) - [MIT](https://github.com/ericchiang/pup/blob/master/LICENSE)
 
 [APKEditor](https://github.com/REAndroid/APKEditor) - [Apache-2.0](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
 
-#For manual patches 
+# For manual patches 
 [apktool](https://github.com/ibotpeaches/apktool) - [Apache-2.0](https://github.com/iBotPeaches/Apktool/blob/main/LICENSE.md)
 Android SDK Command Line Tools and Build Tools
+
 ### Dormant Libraries, resources using in this repository:
 
 <details>
