@@ -1,5 +1,5 @@
 source src/build/utils.sh
-# repo owner pkgname appname regex method/apkpure/archive method(apkpure,archive) archiveurl archivearch
+# repo owner pkgname appname filter method/apkpure/archive method(apkpure,archive) archiveurl
 dl_gh "morphe-cli" "MorpheApp" "latest"
 dl_gh $1 $2 "prerelease"
 get_patches_key $4
@@ -13,7 +13,7 @@ if [[ $6 == "apkpure" ]]
 then
   get_apkpure $3 $4 $5 $7
 elif [[ $6 == "archive" ]]
-  get_archive $3 $4 $5 $7 $8 $9
+  get_archive $3 $4 $5 $7 $8 
 else
   get_apk $3 $4 $4 $5 $6
 fi
