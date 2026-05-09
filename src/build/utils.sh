@@ -65,7 +65,7 @@ dl_gh() {
             if [[ $url != *.asc ]]; then
               name=$(basename "$url")
               wget -q -O "$name" "$url"
-              green_log "[+] Downloading $name from $owner
+              green_log "[+] Downloading $name from $owner"
             fi
           fi
         fi
