@@ -45,6 +45,9 @@ jobs:
         id: release-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+         release_name: "YouTube Morphe"
+        
   patch_morphe_beta:
     name: Patch Morphe Beta
     if: ${{ github.event.inputs.org == 'Morphe Beta' || inputs.org == 'Morphe Beta' }}
