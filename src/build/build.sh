@@ -7,6 +7,7 @@ if [[ $6 == "apkpure" ]]
 then
   get_apkpure $3 $4 $5 $7
 elif [[ $3 == "com.amazon.avod.thirdpartyclient"
+then
   get_apk "com.amazon.avod.thirdpartyclient" "prime-video-arm64-v8a" "amazon-prime-video" "amazon-mobile-llc/amazon-prime-video/amazon-prime-video" "arm64-v8a"
 else
   get_apk $3 $4 $4 $5 $6
