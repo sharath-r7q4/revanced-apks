@@ -55,7 +55,6 @@ jobs:
     
       # 🔎 Find latest Dolphin build
       - name: Find latest Dolphin build and patch
-        continue-on-error: true
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -83,6 +82,8 @@ jobs:
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$DOLPHIN_NAME.apk \
             temp/dolphin-aligned.apk
+          else; then
+          exit
           fi
       - name: Get output
         id: get_output
@@ -139,7 +140,6 @@ jobs:
           mkdir build
           mkdir temp
       - name: Get latest Eden build and patch
-        continue-on-error: true
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -160,6 +160,8 @@ jobs:
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$EDEN_NAME.apk \
             temp/eden-aligned.apk
+          else; then
+          exit
           fi
       - name: Get output
         id: get_output
@@ -216,7 +218,6 @@ jobs:
           mkdir build
           mkdir temp
       - name: Get latest FCL build and patch
-        continue-on-error: true
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -238,6 +239,8 @@ jobs:
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$FCL_NAME.apk \
             temp/fcl-aligned.apk
+          else; then
+          exit
           fi
           
 
