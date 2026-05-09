@@ -18,10 +18,10 @@
 
 [APKEditor](https://github.com/REAndroid/APKEditor) - [Apache-2.0](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
 
-# For manual patches 
+## For manual patches 
 [apktool](https://github.com/ibotpeaches/apktool) - [Apache-2.0](https://github.com/iBotPeaches/Apktool/blob/main/LICENSE.md)
 Android SDK Command Line Tools and Build Tools
-
+ChatGPT
 ### Dormant Libraries, resources using in this repository:
 
 <details>
@@ -134,5 +134,4 @@ Android SDK Command Line Tools and Build Tools
 
 [revanced-build-template](https://github.com/n0k0m3/revanced-build-template) - [GPL-3.0](https://github.com/n0k0m3/revanced-build-template/blob/main/LICENSE)
 
-[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on,[Download Prime Video APKs from here] (https://github.com/sharath-r7q4/revanced-apks-legacy)
-ChatGPT
+[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on,[Download Prime Video APKs from here](https://github.com/sharath-r7q4/revanced-apks-legacy)
