@@ -5,6 +5,7 @@ dl_gh $1 $2 "prerelease"
 get_patches_key $4
 if [[ $3 == "com.amazon.avod.thirdpartyclient" ]]
 then
+ detect_version $3
  version1=$(printf '%s\n' "$version" "$prefer_version" | sort -V | tail -n1)
  version=${version1%.*}
 fi 
