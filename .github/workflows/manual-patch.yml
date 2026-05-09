@@ -119,7 +119,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh-morphe.outputs.internet_error == '0'
-        run: bash src/build/build.sh "piko" "crimera" "com.instagram.android" "instagram-arm64-v8a" "instagram-android/com.instagram.android" "apkpure" "Bundle"
+        run: bash src/build/build.sh "piko" "crimera" "com.instagram.android" "instagram-arm64-v8a" "arm64-v8a" "archive" "Bundle" "https://archive.org/download/geologically/apks"
       - name: Releasing APK files
         id: releasemorphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
