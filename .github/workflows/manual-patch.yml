@@ -114,7 +114,7 @@ jobs:
       - name: Patch apk
         id: patch-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
-        run: bash src/build/build.sh "morphe-patches" "hoo-dles" "com.amazon.avod.thirdpartyclient" "prime-video" "amazon-mobile-llc/amazon-prime-video/amazon-prime-video"
+        run: bash src/build/build.sh "morphe-patches" "hoo-dles" "com.amazon.avod.thirdpartyclient" "prime-video" "amazon-mobile-llc/amazon-prime-video/amazon-prime-video" "arm64-v8a"
       - name: Releasing APK files
         id: releasemorphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
