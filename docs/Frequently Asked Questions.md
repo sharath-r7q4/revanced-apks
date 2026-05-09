@@ -50,7 +50,20 @@ Example Youtube apps include patches:
 `Custom branding|-OappName="YouTube ReVanced" -OiconPath=ReVanced*Logo`
 
 ---
+### Q: How to add custom apps?
 
+Custom apps can be made by a new syntax based on the new build.sh and following parameters into the GitHub Action.
+Following build.sh parameters
+1. Patch repo name
+2. Owner of patch repo
+3. Android package name
+4. App name
+5. App extraction link (refer ../.github/workflows/build.yml)
+6. Bundle/Arch (if APKMirror) or sources (apkpure/archive)
+7. For other sources Same as 6
+8. URL from archive.org upto the package names for archive source only
+
+---
 ### Q: I am facing errors using your apps, what do I do?
 
 I’m so sorry about this, but my repository only patches apps from “scripts” by other devs. I can’t fix errors when apps face errors, so if you get errors, please make an issue in [Revanced](https://github.com/revanced/revanced-patches), [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) or [Revanced Extended Android 6 & 7](https://github.com/kitadai31/revanced-patches-android6-7/tree/revanced-extended) repositories.
