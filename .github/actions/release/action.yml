@@ -11,7 +11,7 @@ runs:
       run: |
         echo  -e "
         **This repository is not like any other repository. It does not create new releases; it only releases new files.**
-        \n ##Build Log"> ${{ github.workspace }}-CHANGELOG.txt
+        \n ## Build Log"> ${{ github.workspace }}-CHANGELOG.txt
         cat build_log >> ${{ github.workspace }}-CHANGELOG.txt
     - name: Release
       uses: ncipollo/release-action@v1.21.0
