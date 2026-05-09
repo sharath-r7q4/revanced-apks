@@ -17,6 +17,7 @@ on:
           - 'Morphe'
           - 'Twitter Piko Beta'
           - 'hoo-dles'
+          - 'All'
   workflow_call:
     inputs:
       org:
@@ -24,8 +25,8 @@ on:
         type: string
 jobs:
   patch_morphe:
-    name: Patch Morphe
-    if: ${{ github.event.inputs.org == 'Morphe' || inputs.org == 'Morphe' }}
+    name: Patch Morphe (YouTuhe)
+    if: ${{ github.event.inputs.org == 'Morphe' || inputs.org == 'Morphe' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -47,5 +48,53 @@ jobs:
         uses: ./.github/actions/release
         with:
          release_name: "YouTube Morphe"
+  patch_piko_twitter:
+    name: Patch Piko (X)
+    if: ${{ github.event.inputs.org == 'piko_x' || inputs.org == 'piko_x' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh-morphe
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch-morphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko" "crimera" "com.twitter.android" "X" "x-corp/twitter/x" "Bundle_extract"
+      - name: Releasing APK files
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+         release_name: "X piko"
+  patch_piko_instagram:
+    name: Patch Piko (Instagram)
+    if: ${{ github.event.inputs.org == 'piko_instagram' || inputs.org == 'piko_instagram' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh-morphe
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch-morphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko" "crimera" "com.instagram.android" "instagram" "instagram/instagram-instagram/instagram" "Bundle_extract"
+      - name: Releasing APK files
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+         release_name: "Instagram piko"
         
       
