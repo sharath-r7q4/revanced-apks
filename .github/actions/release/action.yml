@@ -19,6 +19,6 @@ runs:
         artifacts: |
           ./release/*.apk
         name: ${{ inputs.release_name }}
-        tag: all
+        tag: ${{ inputs.release_name }}
         bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true
