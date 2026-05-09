@@ -12,7 +12,7 @@ on:
     - cron: 0 0/4 * * *
 
 jobs:
-  run:
+  Dolphin:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -84,7 +84,60 @@ jobs:
             --out build/$DOLPHIN_NAME.apk \
             temp/dolphin-aligned.apk
           fi
+      - name: Get output
+        id: get_output
+        run: |
+          echo -e "Patched Dolphin SDK 29: ${DOLPHIN_NAME}" >> build_log.txt
 
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+         artifacts: |
+          ./build/*.apk
+         name: Dolphin-SDK29
+         tag: Dolphin-SDK29
+         bodyFile: build_log.txt
+         allowUpdates: true
+  eden:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+
+      - name: Install Dependencies for APK Editing
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
+          wget -q https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
+          wget -q $(curl -fSsL https://api.github.com/repos/iBotPeaches/Apktool/releases/latest | jq -r '.assets[0].browser_download_url') -O apktool.jar
+          chmod +x apktool
+          sudo mv apktool /usr/local/bin/apktool
+          sudo mv apktool.jar /usr/local/bin/apktool.jar
+          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
+          unzip -q build-tools.zip -d android-build-tools
+          mkdir build
+          mkdir temp
       - name: Get latest Eden build and patch
         continue-on-error: true
         env:
@@ -108,7 +161,60 @@ jobs:
             --out build/$EDEN_NAME.apk \
             temp/eden-aligned.apk
           fi
-            
+      - name: Get output
+        id: get_output
+        run: |
+          echo -e "Patched Eden PUBG: ${EDEN_NAME}" >> build_log.txt
+
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+         artifacts: |
+          ./build/*.apk
+         name: Eden-PUBG
+         tag: Eden-PUBG
+         bodyFile: build_log.txt
+         allowUpdates: true
+  fcl:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+
+      - name: Install Dependencies for APK Editing
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
+          wget -q https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
+          wget -q $(curl -fSsL https://api.github.com/repos/iBotPeaches/Apktool/releases/latest | jq -r '.assets[0].browser_download_url') -O apktool.jar
+          chmod +x apktool
+          sudo mv apktool /usr/local/bin/apktool
+          sudo mv apktool.jar /usr/local/bin/apktool.jar
+          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
+          unzip -q build-tools.zip -d android-build-tools
+          mkdir build
+          mkdir temp
       - name: Get latest FCL build and patch
         continue-on-error: true
         env:
@@ -138,17 +244,14 @@ jobs:
       - name: Get output
         id: get_output
         run: |
-          echo $FCL_LATEST
-          echo $GITHUB_EVENT_NAME
-          DELIM="$(openssl rand -hex 8)"
-          echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
-          echo -e "Patched Dolphin SDK 29: ${DOLPHIN_NAME}\nPatched Eden PUBG: ${EDEN_NAME}\nPatched FCL CoD: ${FCL_NAME}" >> "$GITHUB_OUTPUT"
-          echo "${DELIM}" >> "$GITHUB_OUTPUT"
+          echo -e "Patched FCL CoD: ${FCL_NAME}" >> build_log.txt
 
-      - name: Upload release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
-          BODY: ${{ steps.get_output.outputs.BUILD_LOG }}
-        run: |
-          [[ $(find -H "./build" -maxdepth 0 -type d -empty) ]] ||  gh release create "$TAG" ./build/* --title "Release" --notes "$BODY"
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+         artifacts: |
+          ./release/*.apk
+         name: FCL-CoD
+         tag: FCL-CoD
+         bodyFile: build_log.txt
+         allowUpdates: true
