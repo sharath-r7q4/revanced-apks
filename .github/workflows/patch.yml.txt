@@ -1,0 +1,165 @@
+name: Patch APKs
+on:
+  workflow_call:
+    inputs:
+      from_ci:
+        type: boolean
+        required: false
+        default: true
+
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0/4 * * *
+
+jobs:
+  run:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Get next version code
+        id: next_ver_code
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+         TAG=$(gh release list -L 20 | awk -F '\t' '{print $3}' | grep 'patch-' | head -n 1)
+
+         if [ -z "$TAG" ]; then TAG='patch-0'; fi
+         prefix="${TAG%%[0-9]*}"
+         number="${TAG#$prefix}"
+         printf -v NEXT_VER_CODE "%s%d" "$prefix" "$((number + 1))" 
+         echo "NEXT_VER_CODE=$NEXT_VER_CODE" >> $GITHUB_OUTPUT
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+
+      - name: Install Dependencies for APK Editing
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
+          wget -q https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
+          wget -q $(curl -fSsL https://api.github.com/repos/iBotPeaches/Apktool/releases/latest | jq -r '.assets[0].browser_download_url') -O apktool.jar
+          chmod +x apktool
+          sudo mv apktool /usr/local/bin/apktool
+          sudo mv apktool.jar /usr/local/bin/apktool.jar
+          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
+          unzip -q build-tools.zip -d android-build-tools
+          mkdir build
+          mkdir temp
+    
+      # 🔎 Find latest Dolphin build
+      - name: Find latest Dolphin build and patch
+        continue-on-error: true
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export DOLPHIN_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep Dolphin | awk '{print $NF}')
+          DOLPHIN_APK_URL=$(curl -s https://dolphin-emu.org/download/ \
+            | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' \
+            | awk -F'[-/.]' '{
+              v=$(NF-2); b=$(NF-1);
+              if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}
+            } END{print U}')
+          DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
+          echo "DOLPHIN_APK_URL=$DOLPHIN_APK_URL" >> $GITHUB_ENV
+          echo "DOLPHIN_NAME=$DOLPHIN_NAME" >> $GITHUB_ENV
+          echo 
+          if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] ;then #|| [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+           curl -L "$DOLPHIN_APK_URL" -o temp/dolphin.apk
+           apktool d temp/dolphin.apk -o temp/dolphin-src
+           sed -i -E 's/^( *targetSdkVersion: *)[0-9]+/\129/' temp/dolphin-src/apktool.yml
+           apktool b temp/dolphin-src -o temp/dolphin-patched.apk
+           zipalign 4 temp/dolphin-patched.apk temp/dolphin-aligned.apk
+           java -jar android-build-tools/android-14/lib/apksigner.jar sign \
+            --ks ks-p12.keystore \
+            --ks-type PKCS12 \
+            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
+            --out build/$DOLPHIN_NAME.apk \
+            temp/dolphin-aligned.apk
+          fi
+
+      - name: Get latest Eden build and patch
+        continue-on-error: true
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export EDEN_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep Eden | awk '{print $NF}' )
+          export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
+          export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk)
+          gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > temp/eden.apk
+          echo "EDEN_NAME=$EDEN_NAME" >> $GITHUB_ENV
+          if [[ $EDEN_NAME != $EDEN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            apktool d temp/eden.apk -o temp/eden-src
+            sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' temp/eden-src/AndroidManifest.xml
+            apktool b temp/eden-src -o temp/eden-patched.apk 
+            zipalign 4 temp/eden-patched.apk temp/eden-aligned.apk
+            java -jar android-build-tools/android-14/lib/apksigner.jar sign \
+            --ks ks-p12.keystore \
+            --ks-type PKCS12 \
+            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
+            --out build/$EDEN_NAME.apk \
+            temp/eden-aligned.apk
+          fi
+            
+      - name: Get latest FCL build and patch
+        continue-on-error: true
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FCL_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep FCL| awk '{print $NF}')
+          FCL_APK_URL=$(curl -fSsL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
+          FCL_NAME=$(basename "$FCL_APK_URL" .apk)
+          echo "FCL_APK_URL=$FCL_APK_URL" >> $GITHUB_ENV
+          echo "FCL_NAME=$FCL_NAME" >> $GITHUB_ENV
+          if [[ $FCL_NAME != $FCL_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] ; then
+           curl -L "$FCL_APK_URL" -o temp/fcl.apk
+           apktool d temp/fcl.apk -o temp/fcl-src
+           sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' temp/fcl-src/AndroidManifest.xml
+           apktool b temp/fcl-src -o temp/fcl-patched.apk
+           zipalign 4 temp/fcl-patched.apk temp/fcl-aligned.apk
+           java -jar android-build-tools/android-14/lib/apksigner.jar sign \
+            --ks ks-p12.keystore \
+            --ks-type PKCS12 \
+            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
+            --out build/$FCL_NAME.apk \
+            temp/fcl-aligned.apk
+          fi
+          
+
+      - name: Get output
+        id: get_output
+        run: |
+          echo $FCL_LATEST
+          echo $GITHUB_EVENT_NAME
+          DELIM="$(openssl rand -hex 8)"
+          echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
+          echo -e "Patched Dolphin SDK 29: ${DOLPHIN_NAME}\nPatched Eden PUBG: ${EDEN_NAME}\nPatched FCL CoD: ${FCL_NAME}" >> "$GITHUB_OUTPUT"
+          echo "${DELIM}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+          BODY: ${{ steps.get_output.outputs.BUILD_LOG }}
+        run: |
+          [[ $(find -H "./build" -maxdepth 0 -type d -empty) ]] ||  gh release create "$TAG" ./build/* --title "Release" --notes "$BODY"
