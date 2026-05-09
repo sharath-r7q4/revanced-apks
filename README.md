@@ -19,7 +19,7 @@ Notable Modifications
 - X (piko)
 - Instagram (piko)
 ### Custom patches
-- Eden Nightly (PUBG Spoof) [Original](eden-emu.dev)
+- Eden Nightly (PUBG Spoof) [Original](https://eden-emu.dev)
 - Dolphin Emulator (SDK 29 no scoped storage) [Original](https://dolphin-emu.org)
 - Fold Craft Launcher (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)
 ## Actively Used Libraries
