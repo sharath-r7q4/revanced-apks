@@ -10,7 +10,7 @@ Just use GitHub Releases to find Apps
 > 
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
 ---
-## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revnaced but heavily modified and specialised.
+## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but heavily modified and specialised.
 Notable Modifications
 - Replaced keystore with personal keystore stored in secrets.
 - Redone scripts to be more universal and breaking out of hardcoded multiple bash scripts
