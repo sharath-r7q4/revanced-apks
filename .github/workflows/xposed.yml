@@ -42,11 +42,11 @@ jobs:
           export mver="$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)"
           export aver="$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -oE '[0-9]+\.[0-9]+ - Stable' | sort -V | tail -n 1)"
           echo "[+] Downloading Revenge $mver"
-          wget -q https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
+          wget -q --header="Authorization: $GITHUB_TOKEN" https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
           echo '[+] Downloading APKEditor'
-          wget -q $(curl -fSsL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
+          wget -q --header="Authorization: $GITHUB_TOKEN"  $(curl -H "Authorization: $GITHUB_TOKEN"  -fSsL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
           echo '[+] Downloading LSPatch'
-          wget -q https://github.com/JingMatrix/LSPatch/releases/latest/download/app-release.apk
+          wget -q --header="Authorization: $GITHUB_TOKEN"  https://github.com/JingMatrix/LSPatch/releases/latest/download/app-release.apk
           echo "[+] Downloadong Discord $aver"
           wget -q "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -o discord.apk
 
