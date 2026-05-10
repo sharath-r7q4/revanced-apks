@@ -35,35 +35,34 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-      - name: Get Files
+      - name: Get Files and Patch
         run: |
-          export mver="$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)"
+          export mver="$(curl -sfL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)"
           echo "[+] Downloading Revenge $mver"
           wget -q https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
           echo '[+] Downloading APKEditor'
-          wget -q $(curl -fSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
+          wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
           echo '[+] Downloading LSPatch'
           wget -q https://github.com/JingMatrix/LSPatch/releases/latest/download/lspatch.jar
           echo "[+] Downloadong Discord"
-          export ver=$(curl https://tracker.vd.nexpid.xyz/tracker/index | jq .latest.beta)
+          export ver=$(curl -s https://tracker.vd.nexpid.xyz/tracker/index | jq .latest.beta)
           mkdir splits
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a" -O splits/config.arm64_v8a.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86_64" -O splits/config.x86_64.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.en" -O splits/config.en.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxhdpi" -O splits/config.xxhdpi.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/base" -O splits/base.apk
-          export aver="$(java -jar apkeditor info -i /sdcard/download/base.apk -version-name | cut -d'=' -f2-)"
-          
-          
-          
-          
-          
-      - name: Patch
-        run: |
+          export aver="$(java -jar apkeditor info -i splits/base.apk -version-name | cut -d'=' -f2-)"
+          echo "[+] Merging Splits"
           java -jar apkeditor.jar m -i splits -o discord.apk
+          echo "[+] Patching APK"
           java -jar lspatch.jar discord.apk -m app-release.apk -l 2 -o build -k ks-p12.keystore ${{ secrets.KEYSTORE_PASS }} ${{ secrets.KEYSTORE_ALIAS }} ${{ secrets.KEYSTORE_PASS }}
-          echo "Discord: $aver Revenge: $pver" > build_log.txt
+          echo "Discord: $aver Revenge: $mver" > build_log.txt
           mv build/*.apk build/discord-revenge.apk
+          
+          
+
+
       - name: Release
         uses: ncipollo/release-action@v1.21.0
         with:
