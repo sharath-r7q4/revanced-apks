@@ -48,14 +48,11 @@ jobs:
           echo "[+] Downloadong Discord $aver"
           export ver=$(curl https://tracker.vd.nexpid.xyz/tracker/index | jq .latest.beta)
           mkdir splits
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm_v7a -o splits/config.arm_v7a.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a -o splits/config.arm64_v8a.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86 -o splits/config.x86.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86_64 -o splits/config.x86_64.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.en -o splits/config.en.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxdpi -o splits/config.xxdpi.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxxdpi -o splits/config.xxxdpi.apk
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/base -o splits/base.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a -O splits/config.arm64_v8a.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86_64 -O splits/config.x86_64.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.en -O splits/config.en.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxdpi -O splits/config.xxdpi.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/base -O splits/base.apk
           
           
           
