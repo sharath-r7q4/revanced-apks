@@ -63,7 +63,7 @@ jobs:
           java -jar apkeditor.jar m -i splits -o discord.apk
           java -jar lspatch.jar discord.apk -m app-release.apk -l 2 -o build -k ks-p12.keystore ${{ secrets.KEYSTORE_PASS }} ${{ secrets.KEYSTORE_ALIAS }} ${{ secrets.KEYSTORE_PASS }}
           echo "Discord: $aver Revenge: $pver" > build_log.txt
-          mv build/*.apk build/discord-revenge.apm
+          mv build/*.apk build/discord-revenge.apk
       - name: Release
         uses: ncipollo/release-action@v1.21.0
         with:
