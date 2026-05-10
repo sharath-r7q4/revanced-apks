@@ -48,7 +48,7 @@ jobs:
           echo "[+] Downloadong Discord $aver"
           export ver=$(curl https://tracker.vd.nexpid.xyz/tracker/index | jq .latest.beta)
           mkdir splits
-          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a" -O splits/config.arm64_v8a.apk
+          wget "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a" -O splits/config.arm64_v8a.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86_64" -O splits/config.x86_64.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.en" -O splits/config.en.apk
           wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxdpi" -O splits/config.xxdpi.apk
