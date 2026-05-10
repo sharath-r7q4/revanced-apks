@@ -46,7 +46,7 @@ jobs:
           echo '[+] Downloading LSPatch'
           wget -q https://github.com/JingMatrix/LSPatch/releases/latest/download/lspatch.jar
           echo "[+] Downloadong Discord $aver"
-          wget -q "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -O discord.xapk
+          wget "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -O discord.xapk
       - name: Patch
         run: |
           java -jar apkeditor.jar m -i discord.xapk -o discord.apk
