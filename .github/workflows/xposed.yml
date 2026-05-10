@@ -39,8 +39,8 @@ jobs:
           
       - name: Get Files and Patch
         run: |
-          export mver="$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)
-          export aver="$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -oE '[0-9]+\.[0-9]+ - Stable' | sort -V | tail -n 1)
+          export mver="$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)"
+          export aver="$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -oE '[0-9]+\.[0-9]+ - Stable' | sort -V | tail -n 1)"
           echo "[+] Downloading Revenge $mver"
           wget -q https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
           echo '[+] Downloading APKEditor'
