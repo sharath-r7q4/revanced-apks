@@ -1,0 +1,60 @@
+name: Patch APKs(LSPatch)
+on:
+  workflow_call:
+    inputs:
+      from_ci:
+        type: boolean
+        required: false
+        default: true
+
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * *
+
+jobs:
+  Discord:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+      - name: Download Dependecies and Patch
+        run: |
+         wget https://github.com/JingMatrix/LSPatch/releases/latest/download/lspatch.jar
+         wget https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
+         echo "Module ver:$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest |  grep '"name":' | sed -E 's/.*"([^"]+)".*/\1/' | head -n 1)" > build_log.txt 
+         wget "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -o discord.xapk    
+         echo "App ver:$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -oE '[0-9]+\.[0-9]+ - Stable' | sort -V | tail -n 1)" > build_log.txt
+         wget $(curl -fSsL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
+         java -jar ./apkeditor.jar m -i discord.xapk -o discord.apk
+         java -jar ./lspatch.jar -m app-release.apk -i discord.apk -o build -l 2 -k ks-p12.keystore ${{ secrets.KEYSTORE_PASS }} ${{ secrets.KEYSTORE_ALIAS }} ${{ secrets.KEYSTORE_PASS }}
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+         artifacts: |
+          ./build/*.apk
+         name: Discord-Revenge
+         tag: Discord-Revenge
+         bodyFile: build_log.txt
+         allowUpdates: true
