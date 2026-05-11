@@ -56,15 +56,21 @@ Discord (Revenge)
 [APKEditor](https://github.com/REAndroid/APKEditor) - [Apache-2.0](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
 
 ### For manual patches 
-[apktool](https://github.com/ibotpeaches/apktool) - [Apache-2.0](https://github.com/iBotPeaches/Apktool/blob/main/LICENSE.md)
+
+[APKEditor](https://github.com/REAndroid/APKEditor) - [Apache-2.0](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
 
 Android SDK Command Line Tools and Build Tools
 
 ChatGPT
+
 ### For LSPatch
+[APKEditor](https://github.com/REAndroid/APKEditor) - [Apache-2.0](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
+
 [LSPatch](https://github.com/JingMatrix/LSPatch) - [GPL-3.0](https://github.com/JingMatrix/LSPatch/blob/main/LICENSE)
+
 ## Revenge
 Code inspired from [Manager](https://github.com/revenge-mod/revenge-manager) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
+
 Actual Module [Xposed](https://github.com/revenge-mod/revenge-xposed) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
 
 ### Dormant Libraries, resources using in this repository:
