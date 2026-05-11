@@ -42,7 +42,6 @@ jobs:
 
       - name: Install Dependencies for APK Editing
         run: |
-          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
           wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
           unzip -q build-tools.zip -d android-build-tools
           mkdir build
@@ -67,15 +66,15 @@ jobs:
           if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] ;then #|| [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
            curl -L "$DOLPHIN_APK_URL" -o temp/dolphin.apk
            java -jar apkeditor.jar d -i temp/dolphin.apk -o temp/dolphin-src -t xml -dex
-           sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' dolphin/AndroidManifest.xml
-           java -jar apkeditor.jar b -i temp/dolphin-src -o build/$DOLPHIN_NAME.apk
+           sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' temp/dolphin-src/AndroidManifest.xml
+           java -jar apkeditor.jar b -i temp/dolphin-src -o temp/dolphin-patched.apk
            java -jar android-build-tools/android-14/lib/apksigner.jar sign \
             --ks ks-p12.keystore \
             --ks-type PKCS12 \
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$DOLPHIN_NAME.apk \
-            temp/dolphin-aligned.apk
+            temp/dolphin-patched.apk
           else
            exit
           fi
@@ -123,7 +122,6 @@ jobs:
 
       - name: Install Dependencies for APK Editing
         run: |
-          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
           wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
           wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
           unzip -q build-tools.zip -d android-build-tools
@@ -148,7 +146,7 @@ jobs:
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$EDEN_NAME.apk \
-            temp/eden-aligned.apk
+            temp/eden-patched.apk
           else
            exit
           fi
@@ -196,7 +194,6 @@ jobs:
 
       - name: Install Dependencies for APK Editing
         run: |
-          sudo apt-get update && sudo apt-get install -y jq unzip wget zip zipalign 
           wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
           wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
           unzip -q build-tools.zip -d android-build-tools
@@ -222,7 +219,7 @@ jobs:
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
             --out build/$FCL_NAME.apk \
-            temp/fcl-aligned.apk
+            temp/fcl-patched.apk
           else
            exit
           fi
