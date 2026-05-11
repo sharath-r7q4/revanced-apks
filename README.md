@@ -1,5 +1,5 @@
 ## How does this repository work?
-Just use GitHub Releases to find Apps
+Just use [GitHub Releases](https://github.com/sharath-r7q4/revanced-apks/releases) to find Apps
 
 > [!NOTE]
 > If you want to use the YouTube, YouTube Music or Google Photos app, you need to download and install [MicroG RE](https://github.com/MorpheApp/MicroG-RE)
