@@ -39,48 +39,12 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           
-      - name: Install Dependencies for APK Editing
-        run: |
-          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
-          unzip -q build-tools.zip -d android-build-tools
-          mkdir build
-          mkdir temp
-    
-      # 🔎 Find latest Dolphin build
-      - name: Find latest Dolphin build and patch
+      - name: Download and Patch Dolphin to SDK 29
         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json body --template '{{.body}}' | grep Dolphin | awk '{print $NF}')
-          wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
-          DOLPHIN_APK_URL=$(curl -s https://dolphin-emu.org/download/ \
-            | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' \
-            | awk -F'[-/.]' '{
-              v=$(NF-2); b=$(NF-1);
-              if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}
-            } END{print U}')
-          DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
-          echo "DOLPHIN_APK_URL=$DOLPHIN_APK_URL" >> $GITHUB_ENV
-          echo "DOLPHIN_NAME=$DOLPHIN_NAME" >> $GITHUB_ENV 
-          if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] ;then #|| [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-           curl -L "$DOLPHIN_APK_URL" -o temp/dolphin.apk
-           java -jar apkeditor.jar d -i temp/dolphin.apk -o temp/dolphin-src -t xml -dex
-           sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' temp/dolphin-src/AndroidManifest.xml
-           java -jar apkeditor.jar b -i temp/dolphin-src -o temp/dolphin-patched.apk
-           java -jar android-build-tools/android-14/lib/apksigner.jar sign \
-            --ks ks-p12.keystore \
-            --ks-type PKCS12 \
-            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/dolphin-sdk29.apk \
-            temp/dolphin-patched.apk
-          else
-           exit
-          fi
-      - name: Get output
-        id: get_output
-        run: |
-          echo -e "Patched Dolphin SDK 29: ${DOLPHIN_NAME}" >> build_log.txt
+          src/build/custom.sh dolphin
+
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0
@@ -89,7 +53,7 @@ jobs:
           ./build/*.apk
          name: Dolphin-SDK29
          tag: Dolphin-SDK29
-         bodyFile: build_log.txt
+         bodyFile: build.log
          allowUpdates: true
   eden:
    permissions: write-all
@@ -118,40 +82,11 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 
-      - name: Install Dependencies for APK Editing
-        run: |
-          wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
-          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
-          unzip -q build-tools.zip -d android-build-tools
-          mkdir build
-          mkdir temp
-      - name: Get latest Eden build and patch
+      - name: Download and Patch Eden to PUBG
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export EDEN_LATEST=$(gh release view "Eden-PUBG" --json body --template '{{.body}}' | grep Eden | awk '{print $NF}')          
-          export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
-          export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk)
-          gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > temp/eden.apk
-          echo "EDEN_NAME=$EDEN_NAME" >> $GITHUB_ENV
-          if [[ $EDEN_NAME != $EDEN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-            java -jar apkeditor.jar d -i temp/eden.apk -o temp/eden-src -t xml -dex
-            sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' temp/eden-src/AndroidManifest.xml
-            java -jar apkeditor.jar b -i temp/eden-src -o temp/eden-patched.apk  
-            java -jar android-build-tools/android-14/lib/apksigner.jar sign \
-            --ks ks-p12.keystore \
-            --ks-type PKCS12 \
-            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/eden-pubg.apk \
-            temp/eden-patched.apk
-          else
-           exit
-          fi
-      - name: Get output
-        id: get_output
-        run: |
-          echo -e "Patched Eden PUBG: ${EDEN_NAME}" >> build_log.txt
+          src/build/custom.sh eden
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0
@@ -160,7 +95,7 @@ jobs:
           ./build/*.apk
          name: Eden-PUBG
          tag: Eden-PUBG
-         bodyFile: build_log.txt
+         bodyFile: build.log
          allowUpdates: true
   fcl:
    permissions: write-all
@@ -189,43 +124,11 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 
-      - name: Install Dependencies for APK Editing
-        run: |
-          wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
-          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
-          unzip -q build-tools.zip -d android-build-tools
-          mkdir build
-          mkdir temp
-      - name: Get latest FCL build and patch
+      - name: Download and Patch FCL to CoD
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          FCL_LATEST=$(gh release view "FCL-CoD" --json body --template '{{.body}}' | grep FCL | awk '{print $NF}')
-          FCL_APK_URL=$(curl -fSsL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
-          FCL_NAME=$(basename "$FCL_APK_URL" .apk)
-          echo "FCL_APK_URL=$FCL_APK_URL" >> $GITHUB_ENV
-          echo "FCL_NAME=$FCL_NAME" >> $GITHUB_ENV
-          if [[ $FCL_NAME != $FCL_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] ; then
-           curl -L "$FCL_APK_URL" -o temp/fcl.apk
-           java -jar apkeditor.jar  d -i temp/fcl.apk -o temp/fcl-src -t xml -dex
-           sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' temp/fcl-src/AndroidManifest.xml
-           java -jar apkeditor.jar b -i temp/fcl-src -o temp/fcl-patched.apk
-           java -jar android-build-tools/android-14/lib/apksigner.jar sign \
-            --ks ks-p12.keystore \
-            --ks-type PKCS12 \
-            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/fcl-codm.apk \
-            temp/fcl-patched.apk
-          else
-           exit
-          fi
-          
-
-      - name: Get output
-        id: get_output
-        run: |
-          echo -e "Patched FCL CoD: ${FCL_NAME}" >> build_log.txt
+          src/build/custom.sh fcl
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0
@@ -264,44 +167,11 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 
-      - name: Install Dependencies for APK Editing
-        run: |
-          wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
-          wget -q https://dl.google.com/android/repository/build-tools_r34-linux.zip -O build-tools.zip
-          unzip -q build-tools.zip -d android-build-tools
-          mkdir build
-          mkdir temp
-      - name: Get latest Geode build and patch
+      - name: Download and Patch Geode to PUBGKR
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          GEODE_LATEST=$(gh release view "Geode-PUBGKR" --json body --template '{{.body}}' | grep Geode | awk '{print $NF}')
-          GEODE_APK_URL=$(curl -fSsL https://api.github.com/repos/geode-sdk/android-launcher/releases/latest |  jq -r '.assets[] | select(.name | endswith(".apk") and (contains("android32") | not)) | .browser_download_url' )
-          GEODE_NAME=$(basename "$GEODE_APK_URL" .apk)
-          echo "GEODE_APK_URL=$GEODE_APK_URL" >> $GITHUB_ENV
-          echo "GEODE_NAME=$GEODE_NAME" >> $GITHUB_ENV
-          if [[ $GEODE_NAME != $GEODE_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]] ; then
-           curl -L "$GEODE_APK_URL" -o temp/geode.apk
-           java -jar apkeditor.jar  d -i temp/geode.apk -o temp/geode-src -t xml -dex
-           sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' temp/geode-src/AndroidManifest.xml         
-           java -jar apkeditor.jar b -i temp/geode-src -o temp/geode-patched.apk
-           java -jar android-build-tools/android-14/lib/apksigner.jar sign \
-            --ks ks-p12.keystore \
-            --ks-type PKCS12 \
-            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/geode-pubgkr.apk \
-            temp/geode-patched.apk
-          else
-           exit
-          fi
-          
-
-      - name: Get output
-        id: get_output
-        run: |
-          echo -e "Patched Geode PUBG KR: ${GEODE_NAME}" >> build_log.txt
-
+          src/build/custom.sh geode
       - name: Release
         uses: ncipollo/release-action@v1.21.0
         with:

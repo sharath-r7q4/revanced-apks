@@ -10,7 +10,7 @@ Just use [GitHub Releases](https://github.com/sharath-r7q4/revanced-apks/release
 > 
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
 ---
-## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but heavily modified and specialised.
+## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but slightly modified and specialised.
 
 ## Added custom manifest patches and LSPatch
 
