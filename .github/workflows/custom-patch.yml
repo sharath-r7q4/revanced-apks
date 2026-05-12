@@ -43,7 +43,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          src/build/custom.sh dolphin
+          bash src/build/custom.sh dolphin
 
 
       - name: Release
@@ -86,7 +86,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          src/build/custom.sh eden
+          bash src/build/custom.sh eden
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0
@@ -128,7 +128,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          src/build/custom.sh fcl
+          bash src/build/custom.sh fcl
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0
@@ -171,7 +171,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          src/build/custom.sh geode
+          bash src/build/custom.sh geode
       - name: Release
         uses: ncipollo/release-action@v1.21.0
         with:
