@@ -7,7 +7,7 @@ get_deps() {
   mv android-build-tools/android-14/lib/apksigner.jar apksigner.jar
 }
 sign() {
-    java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --out $2 $1
+    java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in $1 --out $2
 }
 
 dolphin() {
