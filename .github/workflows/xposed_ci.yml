@@ -1,0 +1,14 @@
+name: Xposed Patches
+permissions: write-all
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  workflow_dispatch:
+
+jobs:
+  Patch-hoo-dles-proton-vpn:
+    name: Patch Piko(Instagram)
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "hoo-dles Proton VPN"
+

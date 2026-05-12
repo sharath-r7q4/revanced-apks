@@ -28,7 +28,7 @@ get_date_gh() {
 checker(){
 	local date1 date2 date1_sec date2_sec repo=$1 ur_repo=$repository check=$3
 	date1=$(get_date_gl "$repo" "$2" "^(.*\\\.jar|.*\\\.rvp|.*\\\.mpp)$")
-	date2=$(get_date_gh "$ur_repo" "all" "$check")
+	date2=$(get_date_gh "$ur_repo" "$4" "$check")
 	[[ "$date1" == "null" ]] && date1=""
 	[[ "$date2" == "null" ]] && date2=""
 	if [ -z "$date1" ]; then
@@ -50,4 +50,4 @@ checker(){
 		echo -e "\e[32mOld patch, not build.\e[0m"
 	fi
 }
-checker $1 $2 $3
+checker $1 $2 $3 $4

@@ -1,0 +1,109 @@
+name: Check new patch
+permissions: write-all
+on:
+  schedule:
+    - cron: "0 0/4 * * *"
+  workflow_dispatch:
+    inputs:
+      retry_count:
+        description: 'Do not change value below'
+        required: false
+        default: '1'
+jobs:
+  check:
+    name: Check new patch
+    runs-on: ubuntu-latest
+    env:
+      repository: ${{ github.repository }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Check new patch Piko(X)
+        id: check-piko-x
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh crimera/piko prelease X-piko.apk X-piko
+      - name: Check new patch Piko(Instagram)
+        id: check-piko-instagram
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh crimera/piko prelease Instagram-piko.apk Instagram-piko
+      - name: Check new patch Morphe
+        id: check-morphe
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh MorpheApp/morphe-patches latest youtube-morphe.apk YouTube-Morphe
+      - name: Check new patch hoo-dles Prime Video
+        id: check-hoo-dles-prime-video
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest prime-video-hoo-dles.apk Prime-Video-hoo-dles
+      - name: Check new patch hoo-dles Proton VPN
+        id: check-hoo-dles-proton-vpn
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest protonvpn-hoo-dles.apk Proton-VPN-hoo-dles
+      - name: Re-run workflow if github connection not stable
+        if: always() && steps.check-morphe.outcome == 'skipped' && env.retry_count < env.max_retries
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const maxRetries = ${{ env.max_retries }};
+            let retryCount = ${{ env.retry_count }};
+            if (retryCount < maxRetries) {
+              retryCount += 1;
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: "ci.yml",
+                ref: context.ref,
+                inputs: {
+                  'retry_count': String(retryCount)
+                }
+              });
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retry_count: ${{ github.event.inputs.retry_count }}
+          max_retries: 3
+    outputs:
+      check_morphe: ${{ steps.check-morphe.outputs.new_patch }}
+      check_piko_x: ${{ steps.check-piko-x.outputs.new_patch }}
+      check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
+      check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
+      check_hoo-dles_proton-vpn: ${{ steps.check-hoo-dles-proton-vpn.outputs.new_patch }}
+      
+  Patch-Morphe:
+    name: Patch Morphe
+    needs: check
+    if: ${{ needs.check.outputs.check_morphe == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "Morphe"
+  Patch-Piko-X:
+    name: Patch Piko(X)
+    needs: check
+    if: ${{ needs.check.outputs.check_piko_x == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "piko X"
+  Patch-Piko-Instagram:
+    name: Patch Piko(Instagram)
+    needs: check
+    if: ${{ needs.check.outputs.check_piko_instagram == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "piko Instagram"
+  Patch-hoo-dles-prime-video:
+    name: Patch Piko(Instagram)
+    needs: check
+    if: ${{ needs.check.outputs.check_hoo-dles_prime-video == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "hoo-dles Prime Video"
+  Patch-hoo-dles-proton-vpn:
+    name: Patch Piko(Instagram)
+    needs: check
+    if: ${{ needs.check.outputs.check_hoo-dles_proton-vpn == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "hoo-dles Proton VPN"
+      

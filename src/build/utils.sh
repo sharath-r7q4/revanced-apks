@@ -22,6 +22,7 @@ user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-ag
 # Colored output logs
 green_log() {
     echo -e "\e[32m$1\e[0m"
+	echo $1 >> build.log
 }
 red_log() {
     echo -e "\e[31m$1\e[0m"
@@ -67,7 +68,7 @@ dl_gh() {
             if [[ $url != *.asc ]]; then
               name=$(basename "$url")
               wget -q -O "$name" "$url"
-              green_log "[+] Downloading $name from $owner"
+              green_log "[+] Downloading $name from $owner - $tag"
             fi
           fi
         fi
@@ -89,7 +90,7 @@ dl_gh() {
             if [[ "$3" == "latest" && "$names" == *dev* ]]; then
               continue
             fi
-            green_log "[+] Downloading $names from $2"
+            green_log "[+] Downloading $names from $2 - $tags"
             wget -q -O "$names" $url
           fi
         done
@@ -125,7 +126,7 @@ dl_gl() {
   echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url) \(.name)"' | \
     while read -r url name; do
       if [[ -n "$url" ]] && [[ "$url" != "null" ]] && [[ $url != *.asc ]]; then
-        green_log "[+] Downloading $name from $owner"
+        green_log "[+] Downloading $name from $owner - $tag"
         wget -q -O "$name" "$url"
       fi
     done
@@ -551,6 +552,37 @@ get_apkpure() {
 	fi
 }
 
+get_archive() {
+	detect_version "$1"
+
+	export version="$version"
+
+	version=$(printf '%s\n' "$version" "$prefer_version" | sort -V | tail -n1)
+	unset prefer_version
+
+	if [[ $4 == "Bundle" ]] || [[ $4 == "Bundle_extract" ]] ; then
+		local base_apk="$2.apkm"
+	else
+		local base_apk="$2.apk"
+	fi
+	url="$5/$1/$(curl $5/$1/| $pup 'a attr{href}' | grep $version | grep $3)"
+	green_log "[+] Downloading $2 version: $version $4 $3"
+	req "$url" "$base_apk"
+	if [[ -f "./download/$base_apk" ]]; then
+            green_log "[+] Successfully downloaded $2"
+    else
+            red_log "[-] Failed to download $2"
+            exit 1
+    fi
+    if [[ $4 == "Bundle" ]]; then
+            green_log "[+] Merge splits apk to standalone apk"
+            java -jar $APKEditor m -i ./download/$2.apkm -o ./download/$2.apk > /dev/null 2>&1
+    elif [[ $4 == "Bundle_extract" ]]; then
+            unzip "./download/$base_apk" -d "./download/$(basename "$base_apk" .apkm)" > /dev/null 2>&1
+    fi
+        return 0
+	}
+
 #################################################
 
 # Patching apps with Revanced CLI:
@@ -559,28 +591,28 @@ patch() {
 	if [ -f "./download/$1.apk" ]; then
 		local p b m ks a pu opt force
 		if [ "$3" = inotia ]; then
-			p="patch " b="-p *.rvp" m="" a="" ks=" --keystore=./src/_ks.keystore" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
+			p="patch " b="-p *.rvp" m="" a="" ks="" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
 			echo "Patching with Revanced-cli inotia"
 		elif [ "$3" = morphe ]; then
-			p="patch " b="-p *.mpp" m="" a="" ks=" --keystore=./src/morphe.keystore" pu="--purge=true" opt="--options-file ./src/options/$2.json" force=" --force --continue-on-error"
+			p="patch " b="-p *.mpp" m="" a="" ks="" pu="--purge=true" opt="--options-file ./src/options/$2.json" force=" --force --continue-on-error"
 			echo "Patching with Morphe"
 		else
 			if [[ $(ls revanced-cli-*.jar) =~ revanced-cli-([0-9]+) ]]; then
 				num=${BASH_REMATCH[1]}
 				if [ $num -eq 6 ]; then
-					p="patch " b="-bp *.rvp" m="" a="" ks=" --keystore=./src/ks.keystore" pu="--purge=true" opt="" force=" --force"
+					p="patch " b="-bp *.rvp" m="" a="" ks="" pu="--purge=true" opt="" force=" --force"
 					echo "Patching with Revanced-cli version 6+"
 				elif [ $num -eq 5 ]; then
-					p="patch " b="-p *.rvp" m="" a="" ks=" --keystore=./src/ks.keystore" pu="--purge=true" opt="" force=" --force"
+					p="patch " b="-p *.rvp" m="" a="" ks="" pu="--purge=true" opt="" force=" --force"
 					echo "Patching with Revanced-cli version 5"
 				elif [ $num -eq 4 ]; then
-					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks=" --keystore=./src/ks.keystore" pu="--purge=true" opt="--options=./src/options/$2.json "
+					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks="" pu="--purge=true" opt="--options=./src/options/$2.json "
 					echo "Patching with Revanced-cli version 4"
 				elif [ $num -eq 3 ]; then
-					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks=" --keystore=./src/_ks.keystore" pu="--purge=true" opt="--options=./src/options/$2.json "
+					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks="" pu="--purge=true" opt="--options=./src/options/$2.json "
 					echo "Patching with Revanced-cli version 3"
 				elif [ $num -eq 2 ]; then
-					p="" b="--bundle *patch*.jar" m="--merge *integration*.apk " a="--apk " ks=" --keystore=./src/_ks.keystore" pu="--clean" opt="--options=./src/options/$2.json " force=" --experimental"
+					p="" b="--bundle *patch*.jar" m="--merge *integration*.apk " a="--apk " ks="" pu="--clean" opt="--options=./src/options/$2.json " force=" --experimental"
 					echo "Patching with Revanced-cli version 2"
 				fi
 			fi
@@ -588,7 +620,7 @@ patch() {
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		eval java -jar *cli*.jar $p$b $m$opt --out=./release/$1-$2.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
+		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore $m$opt --out=./release/$1-$2.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
   		unset version
 		unset lock_version
 		unset excludePatches
@@ -613,8 +645,8 @@ lspatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		java -jar lspatch.jar ./download/$1.apk -k ./src/fiorenmas.ks fiorenmas fiorenmas fiorenmas -m "$module" -o ./release/
-		mv ./release/$1-*-lspatched.apk ./release/$1-$3-lspatched.apk
+		java -jar lspatch.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+		mv ./release/$1-*-lspatched.apk ./release/$1-$3.apk
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
@@ -673,7 +705,7 @@ split_arch() {
 		eval java -jar *cli*.jar patch \
 		-p *.mpp $excludePatches$includePatches--options-file ./src/options/$2.json \
 		--striplibs ${archs[i]} --purge=true \
-		--keystore=./src/morphe.keystore --force \
+		--keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore --force \
 		--out=./release/$1-${archs[i]}-$2.apk\
 		./download/$1.apk
 	else

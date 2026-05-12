@@ -1,4 +1,4 @@
-name: 1. Manual Patch
+name: Manual ReVanced Patch
 permissions: write-all
 env:
   repository: ${{ github.repository }}
@@ -9,23 +9,18 @@ on:
   workflow_dispatch:
     inputs:
       org:
-        description: 'Which "Morphe" patches do you want to patch?'
+        description: 'Which apps do you want to patch?'
         required: true
         default: 'Morphe'
         type: choice
         options:
-          - 'Morphe'
-          - 'Morphe Beta'
-          - 'RVE-anddea-stable'
-          - 'RVE-anddea-beta'
-          - 'Twitter Piko Stable'
-          - 'Twitter Piko Beta'
-          - 'DeRevanced'
-          - 'Paresh'
-          - 'hoo-dles'
-          - 'BiliRoamingM'
-          - 'Scrazzz Patches'
-          - 'Dropped Patches - indrastorms'
+          - 'All'
+          - 'Morphe YouTube'
+          - 'piko X'
+          - 'piko Instagram'
+          - 'hoo-dles Proton VPN'
+          - 'hoo-dles Prime Video'
+          - 'Revenge Discord'
   workflow_call:
     inputs:
       org:
@@ -33,16 +28,85 @@ on:
         type: string
 jobs:
   patch_morphe:
-    name: Patch Morphe
-    if: ${{ github.event.inputs.org == 'Morphe' || inputs.org == 'Morphe' }}
+    name: Patch Morphe (YouTuhe)
+    if: ${{ github.event.inputs.org == 'Morphe YouTube' || inputs.org == 'Morphe YouTube' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        run: [1, 2, 3]
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh-morphe
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch-morphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "morphe-youtube"
+      - name: Releasing APK files
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+         release_name: "YouTube-Morphe"
+  patch_piko_twitter:
+    name: Patch Piko (X)
+    if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh-morphe
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch-morphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko-x"
+      - name: Releasing APK files
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+         release_name: "X-piko"
+  patch_piko_instagram:
+    name: Patch Piko (Instagram)
+    if: ${{ github.event.inputs.org == 'piko Instagram' || inputs.org == 'piko Instagram' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
@@ -50,269 +114,124 @@ jobs:
         run: bash src/etc/connection.sh
       - name: Patch apk
         id: patch-morphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
-        run: bash src/build/morphe.sh ${{ matrix.run }}
-      - name: Releasing APK files
-        id: release-morphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_morphe_beta:
-    name: Patch Morphe Beta
-    if: ${{ github.event.inputs.org == 'Morphe Beta' || inputs.org == 'Morphe Beta' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        run: [1, 2, 3]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-morphe-beta
-        run: bash src/etc/connection.sh
-      - name: Check experimental support versions
-        id: experimental-check
-        if: steps.check-gh-morphe-beta.outputs.internet_error == '0'
-        uses: ./.github/actions/experimental-check
-      - name: Patch apk
-        id: patch-morphe-beta
-        if: steps.check-gh-morphe-beta.outputs.internet_error == '0'
         env:
-          youtube_experimental_support: ${{ steps.experimental-check.outputs.youtube_experimental_support }}
-          youtube_music_experimental_support: ${{ steps.experimental-check.outputs.youtube_music_experimental_support }}
-          reddit_experimental_support: ${{ steps.experimental-check.outputs.reddit_experimental_support }}
-        run: bash src/build/morphe-beta.sh ${{ matrix.run }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko-instagram"
       - name: Releasing APK files
-        id: release-morphe-beta
-        if: steps.check-gh-morphe-beta.outputs.internet_error == '0'
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
-  patch_derv:
-    name: Patch DeRevanced Stable
-    if: ${{ github.event.inputs.org == 'DeRevanced' || inputs.org == 'DeRevanced' }}
+        with:
+         release_name: "Instagram-piko"
+      
+  patch_hoo-dles_protonvpn:
+    name: Patch hoo-dles(ProtonVPN)
+    if: ${{ github.event.inputs.org == 'hoo-dles Proton VPN' || inputs.org == 'hoo-dles Proton VPN' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        run: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-derv
+        id: check-gh-morphe
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-derv
-        if: steps.check-gh-derv.outputs.internet_error == '0'
-        run: bash src/build/DeRevanced.sh ${{ matrix.run }}
+        id: patch-morphe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: bash src/build/build.sh "hoo-dles-protonvpn"
       - name: Releasing APK files
-        id: release-derv
-        if: steps.check-gh-derv.outputs.internet_error == '0'
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
-  patch_rve_anddea_stable:
-    name: Patch RVX Anddea stable version
-    if: ${{ github.event.inputs.org == 'RVE-anddea-stable' || inputs.org == 'RVE-anddea-stable' }}
+        with:
+         release_name: "Proton-VPN-hoo-dles"
+
+  patch_hoo-dles_prime-video:
+    name: Patch hoo-dles(Prime Video)
+    if: ${{ github.event.inputs.org == 'hoo-dles Prime Video' || inputs.org == 'hoo-dles Prime Video' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        run: [1, 2]
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-rve-anddea-stable
+        id: check-gh-morphe
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-rve-anddea-stable
-        if: steps.check-gh-rve-anddea-stable.outputs.internet_error == '0'
-        run: bash src/build/Anddea-Revanced-Extended.sh ${{ matrix.run }}
+        id: patch-morphe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: | 
+         bash src/build/build.sh "hoo-dles-prime-video"
       - name: Releasing APK files
-        id: release-rve-anddea-stable
-        if: steps.check-gh-rve-anddea-stable.outputs.internet_error == '0'
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
-  patch_rve_anddea_beta:
-    name: Patch RVX Anddea Beta version
-    if: ${{ github.event.inputs.org == 'RVE-anddea-beta' || inputs.org == 'RVE-anddea-beta' }}
+        with:
+         release_name: "Prime-Video-hoo-dles"
+
+
+  patch_revenge_discord:
+    name: Patch Revenge Discord
+    if: ${{ github.event.inputs.org == 'Revenge Discord' || inputs.org == 'Revenge Discord' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        run: [1, 2]
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-rve-anddea-beta
+        id: check-gh-morphe
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-rve-anddea-beta
-        if: steps.check-gh-rve-anddea-beta.outputs.internet_error == '0'
-        run: bash src/build/Anddea-Revanced-Extended-Beta.sh ${{ matrix.run }}
+        id: patch-morphe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        run: | 
+         bash src/build/build.sh "hoo-dles-prime-video"
       - name: Releasing APK files
-        id: release-rve-anddea-beta
-        if: steps.check-gh-rve-anddea-beta.outputs.internet_error == '0'
+        id: releasemorphe
+        if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
-  patch_twitter_piko_stable:
-    name: Patch Twitter Piko Stable
-    if: ${{ github.event.inputs.org == 'Twitter Piko Stable' || inputs.org == 'Twitter Piko Stable' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        run: [1, 2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-piko-stable
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-piko-stable
-        if: steps.check-gh-piko-stable.outputs.internet_error == '0'
-        run: bash src/build/Piko.sh ${{ matrix.run }}
-      - name: Releasing APK files
-        id: release-piko-stable
-        if: steps.check-gh-piko-stable.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_twitter_piko_beta:
-    name: Patch Twitter Piko Beta
-    if: ${{ github.event.inputs.org == 'Twitter Piko Beta' || inputs.org == 'Twitter Piko Beta' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        run: [1, 2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-piko-beta
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-piko-beta
-        if: steps.check-gh-piko-beta.outputs.internet_error == '0'
-        run: bash src/build/Piko-Beta.sh ${{ matrix.run }}
-      - name: Releasing APK files
-        id: release-piko-beta
-        if: steps.check-gh-piko-beta.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_paresh:
-    name: Patch Paresh
-    if: ${{ github.event.inputs.org == 'Paresh' || inputs.org == 'Paresh' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        run: [1, 2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-paresh
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-paresh
-        if: steps.check-gh-paresh.outputs.internet_error == '0'
-        run: bash src/build/Paresh.sh ${{ matrix.run }}
-      - name: Releasing APK files
-        id: release-paresh
-        if: steps.check-gh-paresh.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_hoo_dles:
-    name: Patch hoo-dles
-    if: ${{ github.event.inputs.org == 'hoo-dles' || inputs.org == 'hoo-dles' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        run: [1, 2, 3, 4]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-hoo-dles
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-hoo-dles
-        if: steps.check-gh-hoo-dles.outputs.internet_error == '0'
-        run: bash src/build/hoo-dles.sh ${{ matrix.run }}
-      - name: Releasing APK files
-        id: release-hoo-dles
-        if: steps.check-gh-hoo-dles.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_BiliRoamingM:
-    name: Patch BiliRoamingM
-    if: ${{ github.event.inputs.org == 'BiliRoamingM' || inputs.org == 'BiliRoamingM' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-BiliRoamingM
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-BiliRoamingM
-        if: steps.check-gh-BiliRoamingM.outputs.internet_error == '0'
-        run: bash src/build/BiliRoamingM.sh
-      - name: Releasing APK files
-        id: release-BiliRoamingM
-        if: steps.check-gh-BiliRoamingM.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_scrazzz_Patches:
-    name: Scrazzz Patches Revanced
-    if: ${{ github.event.inputs.org == 'Scrazzz Patches' || inputs.org == 'Scrazzz Patches' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-scrazzz-patches
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-scrazzz-patches
-        if: steps.check-gh-scrazzz-patches.outputs.internet_error == '0'
-        run: bash src/build/scrazzz-revanced.sh
-      - name: Releasing APK files
-        id: release-scrazzz-patches
-        if: steps.check-gh-scrazzz-patches.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-  patch_Dropped_Patches:
-    name: Dropped Patches Revanced - indrastorms
-    if: ${{ github.event.inputs.org == 'Dropped Patches - indrastorms' || inputs.org == 'Dropped Patches - indrastorms' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh-Dropped-Patches-indrastorms
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        id: patch-Dropped-Patches-indrastorms
-        if: steps.check-gh-Dropped-Patches-indrastorms.outputs.internet_error == '0'
-        run: bash src/build/Dropped-Patches-Revanced.sh
-      - name: Releasing APK files
-        id: release-Dropped-Patches-indrastorms
-        if: steps.check-gh-Dropped-Patches-indrastorms.outputs.internet_error == '0'
-        uses: ./.github/actions/release
+        with:
+         release_name: "Discord-Revenge"
