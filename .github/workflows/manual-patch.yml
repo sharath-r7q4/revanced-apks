@@ -11,7 +11,7 @@ on:
       org:
         description: 'Which apps do you want to patch?'
         required: true
-        default: 'Morphe'
+        default: 'All'
         type: choice
         options:
           - 'All'
@@ -228,7 +228,7 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         run: | 
-         bash src/build/build.sh "hoo-dles-prime-video"
+         bash src/build/build.sh "revenge-discord"
       - name: Releasing APK files
         id: releasemorphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'

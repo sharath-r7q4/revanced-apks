@@ -54,6 +54,13 @@ hoo-dles-prime-video() {
 	get_apk "com.amazon.avod.thirdpartyclient" "prime-video" "apk" "arm64-v8a" "nodpi" "Android 9.0+"
 	patch "prime-video" "hoo-dles" "morphe"
 }
+hoo-dles-protonvpn() {
+	hoo-dles_dl
+	#Patch Proton VPN
+	get_patches_key "Proton-VPN-hoo-dles"
+	get_apk "ch.protonvpn.android" "protonvpn" "apk"
+	patch "protonvpn" "hoo-dles" "morphe"
+}
 morphe-youtube() {
 	morphe_dl
 	# Patch YouTube:
@@ -73,6 +80,9 @@ case "$1" in
 		;;
 	hoo-dles-prime-video)
 		hoo-dles-prime-video
+		;;
+	hoo-dles-protonvpn)
+		hoo-dles-protonvpn
 		;;
 	morphe-youtube)
 		morphe-youtube
