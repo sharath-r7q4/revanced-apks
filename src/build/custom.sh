@@ -23,7 +23,7 @@ dolphin() {
         java -jar apkeditor.jar b -i dolphin-src -o dolphin-patched.apk
         sign dolphin-patched.apk dolphin-sdk29.apk
     else
-       exit
+       exit 0
     fi
 }
 
@@ -41,7 +41,7 @@ eden() {
         java -jar apkeditor.jar b -i eden-src -o eden-patched.apk
         sign eden-patched.apk eden-pubg.apk
     else
-       exit
+       exit 0
     fi
 }
 
@@ -58,7 +58,7 @@ fcl() {
         java -jar apkeditor.jar b -i fcl-src -o fcl-patched.apk
         sign fcl-patched.apk fcl-cod.apk
     else
-       exit
+       exit 0
     fi
 }
 
@@ -75,7 +75,7 @@ geode() {
         java -jar apkeditor.jar b -i geode-src -o geode-patched.apk
         sign geode-patched.apk geode-pubg.apk
     else
-       exit
+       exit 0
     fi
 }
 
