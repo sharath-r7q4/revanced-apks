@@ -47,16 +47,13 @@ eden() {
 
 fcl() {
     get_deps
-    FCL_LATEST=$(gh release view "FCL-CoD" --json  assets | jq .[].[0].name)
-    FCL_LATEST=${FCL_LATEST%%.*}
     FCL_APK_URL=$(curl -fSL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
     FCL_NAME=$(basename "$FCL_APK_URL" .apk)
-    if [[ $FCL_NAME != $FCL_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-        curl -L "$FCL_APK_URL" -o fcl-orig.apk
-        java -jar apkeditor.jar d -i fcl-orig.apk -o fcl-src -t xml -dex
-        sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' fcl-src/AndroidManifest.xml
-        java -jar apkeditor.jar b -i fcl-src -o fcl-patched.apk
-        sign fcl-patched.apk ./release/$FCL_NAME-cod.apk
+    curl -L "$FCL_APK_URL" -o fcl-orig.apk
+    java -jar apkeditor.jar d -i fcl-orig.apk -o fcl-src -t xml -dex
+    sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' fcl-src/AndroidManifest.xml
+    java -jar apkeditor.jar b -i fcl-src -o fcl-patched.apk
+    sign fcl-patched.apk ./release/$FCL_NAME-cod.apk
     else
        exit 0
     fi
@@ -64,16 +61,13 @@ fcl() {
 
 geode() {
     get_deps
-    GEODE_LATEST=$(gh release view "Geode-PUBGKR" --json  assets | jq .[].[0].name)
-    GEODE_LATEST=${GEODE_LATEST%%.*}
     GEODE_APK_URL=$(curl -fSL https://api.github.com/repos/geode-sdk/android-launcher/releases/latest |  jq -r '.assets[] | select(.name | endswith(".apk") and (contains("android32") | not)) | .browser_download_url' )
     GEODE_NAME=$(basename "$GEODE_APK_URL" .apk)
-    if [[ $GEODE_NAME != $GEODE_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-        curl -L "$GEODE_APK_URL" -o geode-orig.apk
-        java -jar apkeditor.jar d -i geode-orig.apk -o geode-src -t xml -dex
-        sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' geode-src/AndroidManifest.xml         
-        java -jar apkeditor.jar b -i geode-src -o geode-patched.apk
-        sign geode-patched.apk ./release/$GEODE_NAME-pubgkr.apk
+    curl -L "$GEODE_APK_URL" -o geode-orig.apk
+    java -jar apkeditor.jar d -i geode-orig.apk -o geode-src -t xml -dex
+    sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' geode-src/AndroidManifest.xml         
+    java -jar apkeditor.jar b -i geode-src -o geode-patched.apk
+    sign geode-patched.apk ./release/$GEODE_NAME-pubgkr.apk
     else
        exit 0
     fi
