@@ -687,7 +687,8 @@ lspatch() {
 			return 1
 		fi
 		java -jar lspatch.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
-		mv ./release/$1-*-lspatched.apk "./release/$1-$version-$3.apk"
+		$version2=$( echo $version |  awk -F " -" '{print $1}' )
+		mv ./release/$1-*-lspatched.apk "./release/$1-$version2-$3.apk"
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
