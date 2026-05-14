@@ -14,7 +14,7 @@ dolphin() {
     get_deps
     _fs_get https://dolphin-emu.org/download/
     export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json body --template '{{.body}}' | grep dolphin | awk '{print $NF}')
-    DOLPHIN_APK_URL=$(curl -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"  https://dolphin-emu.org/download/ | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' | awk -F'[-/.]' '{v=$(NF-2); b=$(NF-1);if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}} END{print U}')
+    DOLPHIN_APK_URL=$(curl  https://dolphin-emu.org/download/ | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' | awk -F'[-/.]' '{v=$(NF-2); b=$(NF-1);if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}} END{print U}')
     DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
     echo -e "Patched Dolphin SDK 29: $DOLPHIN_NAME" >> build.log
     if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
