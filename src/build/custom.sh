@@ -12,7 +12,7 @@ sign() {
 
 dolphin() {
     get_deps
-    fs_get https://dolphin-emu.org/download/
+    _fs_get https://dolphin-emu.org/download/
     export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json body --template '{{.body}}' | grep dolphin | awk '{print $NF}')
     DOLPHIN_APK_URL=$( curl -s https://dolphin-emu.org/download/ | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' | awk -F'[-/.]' '{v=$(NF-2); b=$(NF-1);if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}} END{print U}')
     DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
