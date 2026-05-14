@@ -68,7 +68,8 @@ dl_gh() {
             if [[ $url != *.asc ]]; then
               name=$(basename "$url")
               wget -q -O "$name" "$url"
-              green_log "[+] Downloading $name from $owner - $tag"
+			  release_name=$(gh api repos/$owner/$repo/releases | jq .[0].name)
+              green_log "[+] Downloading $name from $owner - $release_name"
             fi
           fi
         fi
@@ -83,6 +84,7 @@ dl_gh() {
   else
     for repo in $1 ; do
       tags=$( [ "$3" == "latest" ] && echo "latest" || echo "tags/$3" )
+	  release_name=$(gh api repos/$2/$repo/releases/$tags | jq -r .name)
       wget -qO- "https://api.github.com/repos/$2/$repo/releases/$tags" \
         | jq -r '.assets[] | "\(.browser_download_url) \(.name)"' \
         | while read -r url names; do
@@ -90,7 +92,7 @@ dl_gh() {
             if [[ "$3" == "latest" && "$names" == *dev* ]]; then
               continue
             fi
-            green_log "[+] Downloading $names from $2 - $tags"
+            green_log "[+] Downloading $names from $2 - $release_name"
             wget -q -O "$names" $url
           fi
         done
@@ -659,7 +661,7 @@ patch() {
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore $m$opt --out=./release/$1-$2.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
+		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore $m$opt --out=./release/$1-$version-$2-$release_name.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
   		unset version
 		unset lock_version
 		unset excludePatches
@@ -685,7 +687,7 @@ lspatch() {
 			return 1
 		fi
 		java -jar lspatch.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
-		mv ./release/$1-*-lspatched.apk ./release/$1-$3.apk
+		mv ./release/$1-*-lspatched.apk ./release/$1-$version-$3-$release_name.apk
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
