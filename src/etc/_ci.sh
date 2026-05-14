@@ -19,16 +19,10 @@ get_date_gl() {
 	echo "$updated_at"
 }
 
-get_date_gh() {
-	json=$(wget -qO- "https://api.github.com/repos/$1/releases")
-	updated_at=$(echo "$json" | jq -r 'first(.[] | .assets[] | select(.name | test("'"$3"'")) | .updated_at)')
-	echo "$updated_at"
-}
-
 checker(){
-	local date1 date2 date1_sec date2_sec repo=$1 ur_repo=$repository check=$3
+	local date1 date2 date1_sec date2_sec repo=$1 ur_repo=$repository tag=$3
 	date1=$(get_date_gl "$repo" "$2" "^(.*\\\.jar|.*\\\.rvp|.*\\\.mpp)$")
-	date2=$(get_date_gh "$ur_repo" "$4" "$check")
+	date2=$(gh api repos/$ur_repo/releases |jq -r 'first(.[] | select(.tag_name == "'$tag'") | .assets[] | .updated_at )')
 	[[ "$date1" == "null" ]] && date1=""
 	[[ "$date2" == "null" ]] && date2=""
 	if [ -z "$date1" ]; then
@@ -50,4 +44,4 @@ checker(){
 		echo -e "\e[32mOld patch, not build.\e[0m"
 	fi
 }
-checker $1 $2 $3 $4
+checker $1 $2 $3

@@ -1,4 +1,4 @@
-name: Xposed Patches
+name: Manual CI
 permissions: write-all
 on:
   schedule:
@@ -12,4 +12,15 @@ jobs:
     with:
       org: "Revenge Discord"
     secrets: inherit
-
+  Patch-Eden-PUBG:
+    name: Patch Eden(PUBG)
+    uses: ./.github/workflows/custom-patch.yml
+    with:
+      org: "Eden PUBG"
+    secrets: inherit
+  Patch-Dolphin-SDK-29:
+    name: Patch Dolphin SDK 29
+    uses: ./.github/workflows/custom-patch.yml
+    with:
+      org: "Dolphin SDK 29"
+    secrets: inherit

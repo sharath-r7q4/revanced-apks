@@ -2,10 +2,9 @@ name: Custom Patches
 on:
   workflow_call:
     inputs:
-      from_ci:
-        type: boolean
-        required: false
-        default: true
+      org:
+        required: true
+        type: string
 
   workflow_dispatch:
     inputs:
@@ -20,14 +19,12 @@ on:
           - "Eden PUBG"
           - "FCL CoD"
           - "Geode PUBGKR"
-  schedule:
-    - cron: 0 0/4 * * *
 
 jobs:
   Dolphin:
     permissions: write-all
     runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Dolphin SDK 29' || inputs.org == 'All' || github.event_name == 'schedule' }}
+    if: ${{ inputs.org == 'Dolphin SDK 29' || github.event.inputs.org == 'Dolphin SDK 29' || inputs.org == 'All'}}
     steps:
       - uses: actions/setup-java@v5
         with:
@@ -68,7 +65,7 @@ jobs:
   Eden:
    permissions: write-all
    runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'Eden PUBG' || inputs.org == 'All' || github.event_name == 'schedule' }}
+   if: ${{ inputs.org == 'Eden PUBG' || github.event.inputs.org == 'Eden PUBG' || inputs.org == 'All' }}
    steps:
       - uses: actions/setup-java@v5
         with:
@@ -100,7 +97,7 @@ jobs:
   FCL:
    permissions: write-all
    runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'FCL CoD' || inputs.org == 'All' || github.event_name == 'schedule'   }}
+   if: ${{ inputs.org == 'FCL CoD' || github.event.inputs.org == 'FCL CoD' || inputs.org == 'All' }}
    steps:
       - uses: actions/setup-java@v5
         with:
@@ -132,7 +129,7 @@ jobs:
   Geode:
    permissions: write-all
    runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'Geode PUBGKR' || inputs.org == 'All' || github.event_name == 'schedule' }}
+   if: ${{ inputs.org == 'Geode PUBGKR' || github.event.inputs.org == 'Geode PUBGKR' || inputs.org == 'All' }}
    steps:
       - uses: actions/setup-java@v5
         with:
