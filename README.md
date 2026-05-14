@@ -12,7 +12,7 @@ Just use [GitHub Releases](https://github.com/sharath-r7q4/revanced-apks/release
 ---
 ## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but slightly modified and specialised.
 
-## Added custom manifest patches and LSPatch
+## Added custom manifest patches
 
 ### Notable Modifications to revanced part
 - Replaced hardcoded keystore with keystore stored in secrets.
