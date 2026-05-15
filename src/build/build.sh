@@ -70,7 +70,7 @@ hoo-dles-protonvpn() {
 binarymend-sympfonium(){
 	binarymend_dl
 	get_patches_key "Sympfonium-binarymend"
-	get_apk "app.symfonik.music.player" "sympfonium" "apk"
+	get_apk "app.symfonik.music.player" "sympfonium" "bundle"
 	patch "sympfonium" "binarymend" "morphe"
 }
 morphe-youtube() {
