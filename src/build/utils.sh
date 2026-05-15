@@ -3,6 +3,8 @@
 mkdir ./release ./download
 
 #Setup pup for download apk files
+chmod +x pup
+chmod +x pup-arm64
 if [ $OSTYPE == "cygwin" ]; then
     echo "[-] Windows detected, using pup.exe"
 	pup="./pup.exe"
