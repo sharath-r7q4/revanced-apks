@@ -9,5 +9,6 @@ The format is appname-appversion-patchname-patchversion.apk
 - [prime-video-3.0.452-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/prime-video-3.0.452-hoo-dles-v1.32.0.apk)
 - [protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
+- [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
 - [x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk)
 - [youtube-20.47.62-morphe-v1.28.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.28.0.apk)
