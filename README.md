@@ -25,11 +25,13 @@ Check latest [Releases](https://github.com/sharath-5br2r/patched-apks-builder/bl
 - Instagram (piko)
 - Prime Video (hoo-dles)
 - Proton VPN (hoo-dles)
+- Symfonium (binarymend **NOT FUNCTIONAL**)
 ### Custom patches
 - Eden Nightly (PUBG Spoof) [Original](https://eden-emu.dev)
 - Dolphin Emulator (SDK 29 no scoped storage) [Original](https://dolphin-emu.org)
 - Fold Craft Launcher (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)
 - Geode (PUBG KR Spoof) [Original](https://github.com/geode-sdk/android-launcher)
+- Winlator (PUBG VN Spoof) [Original](https://github.com/StevenMXZ/Winlator-Ludashi)
 ### Xposed patches 
 - Discord (Revenge)
 ## Actively Used Libraries
