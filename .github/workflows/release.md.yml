@@ -1,0 +1,46 @@
+name: "Generate Releases File"
+permissions: write-all
+on:
+    schedule:
+        - cron: "0 0/4 * * *"
+    workflow_dispatch:
+jobs:
+    generate_releases:
+        name: Generate releases file
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v6.0.2
+        - name: Generate releases file
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+              echo "# Latest Releases" > releases.md
+              gh release view all --json assets | jq -r '
+                .assets
+                | map(
+                    # Extract prefix (everything before the first dash followed by a number, "v", or a dot)
+                    # If the regex fails, it defaults to the full name
+                    .prefix = (if (.name | test("^(.*?)-(v?[0-9]|\\.)")) then (.name | capture("^(?<p>.*?)-(v?[0-9]|\\.)").p) else .name end)
+                    )
+                | group_by(.prefix)
+                | map(
+                    # Sort each group by createdAt date and reverse it so the latest is first
+                    sort_by(.createdAt) | reverse | .[0]
+                    )
+                | .[]
+                # Format the output as Markdown bullets
+                | "- [\(.name)](\(.url))"
+                ' ">> releases.md
+        - name: Commit and push releases file
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git add releases.md
+              git commit -m "Update releases file"
+              git push
+            
+                
+
