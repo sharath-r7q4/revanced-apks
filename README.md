@@ -17,7 +17,8 @@ Check latest [Releases](https://github.com/sharath-5br2r/patched-apks-builder/bl
 ### Notable Modifications to revanced part
 - Replaced hardcoded keystore with keystore stored in secrets.
 - Moved patches Sstuff from seperate files into a single file.
-- Dedicated release for each apps with logs
+- APK Files now have versions in their name
+- Automatic latest release generation
 - Added suport for Archive.org apk repositories
 ## Patched Apps
 - YouTube (Morphe)
