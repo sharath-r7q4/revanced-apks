@@ -1,6 +1,6 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk
-- [Eden-Android-4d49341918-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-4d49341918-pubg.apk)
+- [Eden-Android-5ab0227624-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-5ab0227624-pubg.apk)
 - [FCL-release-1.3.0.6-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.6-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [discord-.330.6.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.330.6.-.Beta.-revenge.apk)
