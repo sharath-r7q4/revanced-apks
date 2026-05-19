@@ -1,15 +1,14 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk
 - [Eden-Android-5ab0227624-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-5ab0227624-pubg.apk)
-- [FCL-release-1.3.0.6-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.6-all-cod.apk)
+- [FCL-release-1.3.0.7-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.7-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [discord-.330.6.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.330.6.-.Beta.-revenge.apk)
 - [dolphin-master-2603-379-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-379-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
 - [instagram-arm64-v8a-426.0.0.37.68-piko-v3.4.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-426.0.0.37.68-piko-v3.4.0-dev.2.apk)
-- [prime-video-3.0.452-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/prime-video-3.0.452-hoo-dles-v1.32.0.apk)
+- [prime-video-3.0.452-hoo-dles-v1.31.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/prime-video-3.0.452-hoo-dles-v1.31.1.apk)
 - [protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
-- [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
 - [x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk)
 - [youtube-20.47.62-morphe-v1.28.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.28.0.apk)
