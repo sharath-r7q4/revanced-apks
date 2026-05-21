@@ -8,3 +8,8 @@ temp/*
 *.mpp
 APKEditor.jar
 *temp*files*
+*.log
+.env
+*tdl*
+tg_export.json
+tg_tmp_*/

@@ -633,6 +633,81 @@ get_archive() {
         return 0
 	}
 
+# Download files from Telegram channel/group
+# Required secret in github setting TDL_BACKUP base64 backup file from https://docs.iyear.me/tdl/more/cli/tdl_backup/
+# You must login your telegram (recommend use clone account) before backup https://docs.iyear.me/tdl/getting-started/quick-start/#login
+telegram_dl() {
+	local chat_id="$1" num_posts="$2" file_pattern="$3" out_name="$4"
+
+	if [[ -z "$TDL_BACKUP" ]]; then
+		red_log "[-] Missing TDL_BACKUP secret"
+		return 1
+	fi
+
+	if [[ $OSTYPE = "cygwin" ]]; then
+	 green_log "[+] Detected Windows environment, downloading Windows version of tdl"
+	 wget -q $(wget -qO- "https://api.github.com/repos/iyear/tdl/releases/latest" | jq -r '.assets[] | select(.name | test("Windows_64bit\\.zip$")) | .browser_download_url')
+	 unzip  -q "tdl_Windows_64bit.zip" tdl.exe
+	 rm -f ./tdl.zip
+	 tdl=./tdl.exe
+    else
+		if [[ $(uname -m) == "x86_64" ]]; then
+			green_log "[+] Detected Linux x86_64 environment, downloading Linux x86_64 version of tdl"
+		    wget -q $(wget -qO- "https://api.github.com/repos/iyear/tdl/releases/latest" | jq -r '.assets[] | select(.name | test("Linux_64bit\\.tar\\.gz$")) | .browser_download_url')
+			tar -xzf ./tdl_Linux_64bit.tar.gz tdl
+			rm -f ./tdl_Linux_64bit.tar.gz
+			chmod +x ./tdl
+			tdl=./tdl
+		elif [[ $(uname -m) == "aarch64" ]]; then
+			green_log "[+] Detected Linux arm64 environment, downloading Linux arm64 version of tdl"
+			wget -q $(wget -qO- "https://api.github.com/repos/iyear/tdl/releases/latest" | jq -r '.assets[] | select(.name | test("Linux_arm64\\.tar\\.gz$")) | .browser_download_url')
+			tar -xzf ./tdl_Linux_arm64.tar.gz tdl
+			rm -f ./tdl_Linux_arm64.tar.gz
+			chmod +x ./tdl
+			tdl=./tdl		
+		fi		
+	fi 
+
+	echo "$TDL_BACKUP" | base64 -d > ./backup.tdl
+	$tdl recover --file ./backup.tdl > /dev/null 2>&1
+	rm -f ./backup.tdl
+
+	local ext="${file_pattern##*.}"
+	local filter="Media.Name endsWith '.$ext'"
+
+	green_log "[+] Downloading from Telegram chat $chat_id last $num_posts posts matching '$file_pattern'"
+
+	$tdl chat export -c "$chat_id" -T last -i "$num_posts" -f "$filter" -o ./tg_export.json > /dev/null 2>&1
+	if [[ ! -f "./tg_export.json" ]]; then
+		red_log "[-] Failed to export messages from Telegram"
+		return 1
+	fi
+
+	jq '.messages = [.messages[0]]' ./tg_export.json > ./tg_export_one.json
+	mv ./tg_export_one.json ./tg_export.json
+
+	local tmp_dir="./tg_tmp_$$"
+	mkdir -p "$tmp_dir"
+	$tdl dl -f ./tg_export.json -d "$tmp_dir" > /dev/null 2>&1
+
+	local dl_file
+	dl_file=$(find "$tmp_dir" -type f | head -1)
+
+	if [[ -n "$dl_file" ]]; then
+		green_log "[+] Downloaded: $(basename "$dl_file")"
+		if [[ -z "$out_name" ]]; then
+			mv "$dl_file" "./download/$out_name"
+		fi
+		rm -rf "$tmp_dir" ./tg_export.json
+		version=$(basename "$dl_file")
+	else
+		red_log "[-] Telegram download failed"
+		rm -rf "$tmp_dir" ./tg_export.json
+		return 1
+	fi
+
+}
+
 #################################################
 
 # Patching apps with Revanced CLI:
@@ -765,3 +840,5 @@ split_arch() {
 		exit 1
 	fi
 }
+
+#################################################
