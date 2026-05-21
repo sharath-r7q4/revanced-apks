@@ -13,4 +13,5 @@ The format is appname-appversion-patchname-patchversion.apk
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
 - [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
 - [x-11.91.0-release-ripped.0-piko-v3.4.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.91.0-release-ripped.0-piko-v3.4.0.apk)
+- [x-stable-3744301388_5_11.91.0-release-ripped.0.apk-piko-v3.4.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_5_11.91.0-release-ripped.0.apk-piko-v3.4.0.apk)
 - [youtube-20.47.62-morphe-v1.29.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.29.0-dev.2.apk)
