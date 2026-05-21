@@ -83,6 +83,7 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          TDL_BACKUP: ${{ secrets.TDL_BACKUP }}
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "piko-x"
