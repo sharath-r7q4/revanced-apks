@@ -1,5 +1,5 @@
 # Latest Releases
-The format is appname-appversion-patchname-patchversion.apk whereever applicable. Sometimes there wont be a patch, or any of the versions
+The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
 - [Eden-Android-2a66b40267-2026-05-20T21.26.40Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-2a66b40267-2026-05-20T21.26.40Z-pubg.apk)
 - [FCL-release-1.3.0.7-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.7-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
