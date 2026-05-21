@@ -38,8 +38,8 @@ piko-x() {
     piko_dl
     # Patch Twitter Piko:
     get_patches_key "x-piko"
-    telegram_dl "https://t.me/xriprepo" "10" "*.apk" "twitter-stable.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
-	patch "twitter-stable" "piko" "morphe"
+    telegram_dl "https://t.me/xriprepo" "10" "*.apk" "x.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
+	patch "x" "piko" "morphe"
 }
 piko-instagram() {
     piko_dl
