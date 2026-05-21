@@ -38,9 +38,8 @@ piko-x() {
     piko_dl
     # Patch Twitter Piko:
     get_patches_key "x-piko"
-    get_apk "com.twitter.android" "x" "bundle_extract" "universal" "120-640dpi" "Android 9.0+"
-    split_editor "x" "x"
-    patch "x" "piko" "morphe"
+    telegram_dl "https://t.me/xriprepo" "10" "*.apk" "twitter-stable.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
+	patch "twitter-stable" "piko" "morphe"
 }
 piko-instagram() {
     piko_dl
