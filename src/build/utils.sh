@@ -695,7 +695,8 @@ telegram_dl() {
 
 	if [[ -n "$dl_file" ]]; then
 		green_log "[+] Downloaded: $(basename "$dl_file")"
-		if [[ -z "$out_name" ]]; then
+		if [[ ! -z "$out_name" ]]; then
+		    green_log "Move detected"
 			mv "$dl_file" "./download/$out_name"
 		fi
 		rm -rf "$tmp_dir" ./tg_export.json
