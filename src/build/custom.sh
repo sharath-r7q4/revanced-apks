@@ -23,12 +23,13 @@ dolphin() {
 
 eden() {
     export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
+    date1=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json updatedAt  -q ".[0].updatedAt")
     export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk | cut -d'-' -f3 )
     gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > eden-orig.apk
     java -jar APKEditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
     sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i eden-src -o eden-patched.apk
-    sign eden-patched.apk ./release/Eden-Android-$EDEN_NAME-pubg.apk
+    sign eden-patched.apk ./release/Eden-Android-$EDEN_NAME-$date1-pubg.apk
 }
 
 fcl() {
