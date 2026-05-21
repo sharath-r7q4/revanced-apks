@@ -1,7 +1,6 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk
 - [Eden-Android-2a66b40267-2026-05-20T21.26.40Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-2a66b40267-2026-05-20T21.26.40Z-pubg.apk)
-- [Eden-Android-e875a3196b-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-e875a3196b-pubg.apk)
 - [FCL-release-1.3.0.7-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.7-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [discord-.330.8.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.330.8.-.Beta.-revenge.apk)
@@ -12,6 +11,5 @@ The format is appname-appversion-patchname-patchversion.apk
 - [protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
 - [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
-- [x-11.91.0-release-ripped.0-piko-v3.4.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.91.0-release-ripped.0-piko-v3.4.0.apk)
 - [x-stable-3744301388_5_11.91.0-release-ripped.0.apk-piko-v3.4.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_5_11.91.0-release-ripped.0.apk-piko-v3.4.0.apk)
 - [youtube-20.47.62-morphe-v1.29.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.29.0-dev.2.apk)
