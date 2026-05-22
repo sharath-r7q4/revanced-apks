@@ -21,13 +21,13 @@ get_date_gl() {
 
 get_date_gh() {
 	json=$(wget -qO- "https://api.github.com/repos/$1/releases")
-	updated_at=$(echo "$json" | jq -r 'first(.[] | .assets[] | select(.name | test("'"$3"'")) | .updated_at)')
+	updated_at=$(echo "$json" | jq -r '[.[] | select(.tag_name == "'$2'") | .assets[] | select(.name | test("'$3'"))] | sort_by(.updated_at) | last | .updated_at')
 	echo "$updated_at"
 }
 
 checker(){
 	local date1 date2 date1_sec date2_sec repo=$1 ur_repo=$repository check=$3
-	date1=$(get_date_gl "$repo" "$2" "^(.*\\\.jar|.*\\\.rvp|.*\\\.mpp)$")
+	date1=$(get_date_gl "$repo" "$2" "^(.*\\\.jar|.*\\\.rvp|.*\\\.mpp|.*\\\.apk)$")
 	date2=$(get_date_gh "$ur_repo" "all" "$check")
 	[[ "$date1" == "null" ]] && date1=""
 	[[ "$date2" == "null" ]] && date2=""

@@ -6,7 +6,7 @@
 
 get_date_gh() {
 	json=$(wget -qO- "https://api.github.com/repos/$1/releases")
-	updated_at=$(echo "$json" | jq -r 'first(.[] | .assets[] | select(.name | test("'"$3"'")) | .updated_at)')
+	updated_at=$(echo "$json" | jq -r '[.[] | select(.tag_name == "'$2'") | .assets[] | select(.name | test("'$3'"))] | sort_by(.updated_at) | last | .updated_at')
 	echo "$updated_at"
 }
 	
