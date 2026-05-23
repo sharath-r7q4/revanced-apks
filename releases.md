@@ -8,7 +8,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
 - [instagram-arm64-v8a-426.0.0.37.68-piko-v3.4.1-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-426.0.0.37.68-piko-v3.4.1-dev.1.apk)
 - [prime-video-3.0.452-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/prime-video-3.0.452-hoo-dles-v1.32.0.apk)
-- [protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk)
+- [protonvpn-5.17.72.0-hoo-dles-v1.33.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.33.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
 - [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
 - [x-stable-3744301388_7_11.93.0-release-ripped.0.apk-piko-v3.4.1-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_7_11.93.0-release-ripped.0.apk-piko-v3.4.1-dev.1.apk)
