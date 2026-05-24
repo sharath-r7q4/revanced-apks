@@ -2,7 +2,7 @@
 The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
 - [Eden-Android-9b18d0b111-2026-05-22T20.17.54Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-9b18d0b111-2026-05-22T20.17.54Z-pubg.apk)
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
-- [FCL-release-1.3.0.7-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.7-all-cod.apk)
+- [FCL-release-1.3.0.8-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.8-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [discord-.330.10.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.330.10.-.Beta.-revenge.apk)
 - [dolphin-master-2603-379-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-379-sdk29.apk)
