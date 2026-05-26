@@ -103,7 +103,7 @@ jobs:
     if: ${{ needs.check.outputs.check_morphe == 1 }}
     uses: ./.github/workflows/manual-patch.yml
     with:
-      org: "Morphe"
+      org: "Morphe YouTube"
     secrets: inherit
   Patch-Piko-X:
     name: Patch Piko(X)
