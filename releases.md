@@ -4,7 +4,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
 - [FCL-release-1.3.0.8-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.8-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
-- [discord-.330.10.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.330.10.-.Beta.-revenge.apk)
+- [discord-.331.6.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.331.6.-.Beta.-revenge.apk)
 - [dolphin-master-2603-379-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-379-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
 - [instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.1.apk)
