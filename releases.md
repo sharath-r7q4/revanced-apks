@@ -1,6 +1,6 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
-- [Eden-Android-9d55875377-2026-05-26T20.49.42Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-9d55875377-2026-05-26T20.49.42Z-pubg.apk)
+- [Eden-Android-8fd495f906-2026-05-27T21.04.58Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-8fd495f906-2026-05-27T21.04.58Z-pubg.apk)
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
 - [FCL-release-1.3.0.8-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.8-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
