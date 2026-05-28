@@ -79,70 +79,6 @@ Actual Module [Xposed](https://github.com/revenge-mod/revenge-xposed) - [OSL-3.0
 
 ### Dormant Libraries, resources using in this repository:
 
-<details>
-  <summary>Revanced</summary>
-
-[Patches](https://github.com/revanced/revanced-patches) - [GPL-3.0](https://github.com/revanced/revanced-patches/blob/main/LICENSE)
-
-[Integrations](https://github.com/revanced/revanced-integrations) - [GPL-3.0](https://github.com/revanced/revanced-integrations/blob/main/LICENSE)
-
-[CLI](https://github.com/revanced/revanced-cli) - [GPL-3.0](https://github.com/revanced/revanced-cli/blob/main/LICENSE)
-
-[GmsCore](https://github.com/ReVanced/GmsCore) - [GPL-3.0](https://github.com/revanced/revanced-cli/blob/main/LICENSE)
-
-</details>
-
-<details>
-  <summary>inotia00</summary>
-
-[Patches](https://github.com/inotia00/revanced-patches) - [GPL-3.0](https://github.com/inotia00/revanced-patches/blob/revanced-extended/LICENSE)
-
-[Patches arsclib](https://github.com/inotia00/revanced-patches-arsclib) - [GPL-3.0](https://github.com/inotia00/revanced-patches-arsclib/blob/arsclib-old/LICENSE)
-
-[Integrations](https://github.com/inotia00/revanced-integrations) - [GPL-3.0](https://github.com/inotia00/revanced-integrations/blob/main/LICENSE)
-
-[CLI](https://github.com/inotia00/revanced-cli) - [GPL-3.0](https://github.com/inotia00/revanced-cli/blob/main/LICENSE)
-
-[CLI arsclib](https://github.com/inotia00/revanced-cli-arsclib) - [GPL-3.0](https://github.com/inotia00/revanced-cli-arsclib/blob/arsclib-old/LICENSE)
-
-</details>
-
-<details>
-  <summary>anddea</summary>
-
-[Patches](https://github.com/anddea/revanced-patches) - [GPL-3.0](https://github.com/anddea/revanced-patches/blob/main/LICENSE)
-
-[Integrations](https://github.com/anddea/revanced-integrations) - [GPL-3.0](https://github.com/anddea/revanced-integrations/blob/main/LICENSE)
-
-</details>
-
-</details>
-
-
-<details>
-  <summary>kitadai31</summary>
-
-[Patches](https://github.com/kitadai31/revanced-patches-android6-7) - [GPL-3.0](https://github.com/kitadai31/revanced-patches-android6-7/blob/revanced-extended/LICENSE)
-
-[Integrations](https://github.com/kitadai31/revanced-integrations) - [GPL-3.0](https://github.com/kitadai31/revanced-integrations/blob/revanced-extended/LICENSE)
-
-</details>
-
-<details>
-  <summary>d4n3436</summary>
-
-[Patches](https://github.com/d4n3436/revanced-patches-android5) - [GPL-3.0](https://github.com/d4n3436/revanced-patches-android5/blob/revanced-extended/LICENSE)
-
-[Integrations](https://github.com/d4n3436/revanced-integrations) - [GPL-3.0](https://github.com/d4n3436/revanced-integrations/blob/revanced-extended/LICENSE)
-
-</details>
-
-<details>
-  <summary>BiliRoamingM</summary>
-
-[Patches & Integrations](https://github.com/sakarie9/BiliRoamingM) - [GPL-3.0](https://github.com/sakarie9/BiliRoamingM/blob/main/LICENSE)
-
-</details>
 
 <details>
   <summary>indrastorms</summary>
@@ -172,12 +108,6 @@ Actual Module [Xposed](https://github.com/revenge-mod/revenge-xposed) - [OSL-3.0
 
 </details>
 
-<details>
-  <summary>Paresh Maheshwari</summary>
-
-[Patches](https://github.com/Paresh-Maheshwari/paresh-patches) - [GPL-3.0](https://github.com/Paresh-Maheshwari/paresh-patches/blob/main/LICENSE)
-
-</details>
 
 <details>
   <summary>gnadgnaoh</summary>
