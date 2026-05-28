@@ -639,11 +639,6 @@ get_archive() {
 telegram_dl() {
 	local chat_id="$1" num_posts="$2" file_pattern="$3" out_name="$4"
 
-	if [[ -z "$TDL_BACKUP" ]]; then
-		red_log "[-] Missing TDL_BACKUP secret"
-		return 1
-	fi
-
 	if [[ $OSTYPE = "cygwin" ]]; then
 	 green_log "[+] Detected Windows environment, downloading Windows version of tdl"
 	 wget -q $(wget -qO- "https://api.github.com/repos/iyear/tdl/releases/latest" | jq -r '.assets[] | select(.name | test("Windows_64bit\\.zip$")) | .browser_download_url')
@@ -843,3 +838,4 @@ split_arch() {
 }
 
 #################################################
+
