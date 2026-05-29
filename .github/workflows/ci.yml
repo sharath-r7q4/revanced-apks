@@ -22,6 +22,14 @@ jobs:
       - name: Check github connection
         id: check-gh
         run: bash src/etc/connection.sh
+      - name: Check new patch Morphe YouTube
+        id: check-morphe
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh MorpheApp/morphe-patches prerelease youtube-app.*morphe
+      - name: Check new patch Morphe YouTube Music
+        id: check-morphe-ytm
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh MorpheApp/morphe-patches prerelease youtube-music-arm.*morphe
       - name: Check new patch Piko(X)
         id: check-piko-x
         if: steps.check-gh.outputs.internet_error == '0'
@@ -30,10 +38,6 @@ jobs:
         id: check-piko-instagram
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/ci.sh crimera/piko prerelease instagram.*piko
-      - name: Check new patch Morphe
-        id: check-morphe
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh MorpheApp/morphe-patches prerelease youtube.*morphe
       - name: Check new patch hoo-dles Prime Video
         id: check-hoo-dles-prime-video
         if: steps.check-gh.outputs.internet_error == '0'
@@ -87,6 +91,7 @@ jobs:
           max_retries: 3
     outputs:
       check_morphe: ${{ steps.check-morphe.outputs.new_patch }}
+      check_morphe_ytm: ${{ steps.check-morphe-ytm.outputs.new_patch }}
       check_piko_x: ${{ steps.check-piko-x.outputs.new_patch }}
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
       check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
@@ -104,6 +109,14 @@ jobs:
     uses: ./.github/workflows/manual-patch.yml
     with:
       org: "Morphe YouTube"
+    secrets: inherit
+  Patch-Morphe-YouTube-Music:
+    name: Patch Morphe YouTube Music
+    needs: check
+    if: ${{ needs.check.outputs.check_morphe_ytm == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "Morphe YouTube Music"
     secrets: inherit
   Patch-Piko-X:
     name: Patch Piko(X)
@@ -143,13 +156,13 @@ jobs:
     if: ${{ needs.check.outputs.check_binarymend_symfonium == 1 }}
     uses: ./.github/workflows/manual-patch.yml
     with:
-      org: "hoo-dles Prime Video"
+      org: "binarymend Symfonium"
     secrets: inherit
   Patch-FCL:
     name: Patch FCL
     needs: check
     if: ${{ needs.check.outputs.check_fcl == 1 }}
-    uses: ./.github/workflows/custom-patch.yml
+    uses: ./.github/workflows/manual-patch.yml
     with:
       org: "FCL CoD"
     secrets: inherit
@@ -157,14 +170,14 @@ jobs:
     name: Patch Geode
     needs: check
     if: ${{ needs.check.outputs.check_geode == 1 }}
-    uses: ./.github/workflows/custom-patch.yml
+    uses: ./.github/workflows/manual-patch.yml
     with:
       org: "Geode PUBGKR"
     secrets: inherit
   Patch-Eden-PUBG:
     name: Patch Eden(PUBG)
     needs: check
-    uses: ./.github/workflows/custom-patch.yml
+    uses: ./.github/workflows/manual-patch.yml
     if: ${{ needs.check.outputs.check_eden == 1 }}
     with:
       org: "Eden PUBG"
@@ -172,7 +185,7 @@ jobs:
   Patch-Winlator:
     name: Patch Winlator
     needs: check
-    uses: ./.github/workflows/custom-patch.yml
+    uses: ./.github/workflows/manual-patch.yml
     if: ${{ needs.check.outputs.check_winlator == 1 }}
     with:
       org: "Winlator PUBGVN"

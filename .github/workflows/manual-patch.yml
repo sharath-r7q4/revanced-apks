@@ -23,6 +23,11 @@ on:
           - 'hoo-dles Prime Video'
           - 'binarymend Symfonium'
           - 'Revenge Discord'
+          - "Dolphin SDK 29"
+          - "Eden PUBG"
+          - "FCL CoD"
+          - "Geode PUBGKR"
+          - "Winlator PUBGVN"
   workflow_call:
     inputs:
       org:
@@ -337,8 +342,165 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+  Dolphin:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Dolphin SDK 29' || github.event.inputs.org == 'Dolphin SDK 29' || inputs.org == 'All'}}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Start FlareSolverr
+        shell: bash
+        run: |
+          docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
+          echo "[*] Waiting for FlareSolverr to start..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:8191/ > /dev/null 2>&1; then
+              echo "[+] FlareSolverr is ready."
+              break
+            fi
+            sleep 2
+          done
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Download and Patch Dolphin to SDK 29
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/custom.sh dolphin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+  Eden:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'Eden PUBG' || github.event.inputs.org == 'Eden PUBG' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Download and Patch Eden to PUBG
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/custom.sh eden
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+  FCL:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'FCL CoD' || github.event.inputs.org == 'FCL CoD' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Download and Patch FCL to CoD
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/custom.sh fcl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+
+  Geode:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'Geode PUBGKR' || github.event.inputs.org == 'Geode PUBGKR' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Download and Patch Geode to PUBGKR
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/custom.sh geode
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+
+  Winlator:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Winlator PUBGVN' || github.event.inputs.org == 'Winlator PUBGVN' || inputs.org == 'All' }}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Download and Patch Winlator to PUBG VN
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/custom.sh winlator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
   update-releases-file:
-    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord]
+    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord, Dolphin, Eden, FCL, Geode, Winlator]
     name: Update releases file
     permissions: write-all
     if: always()
