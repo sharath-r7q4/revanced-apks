@@ -182,7 +182,7 @@ case "$1" in
 		piko-instagram
 		;;
 	hoo-dles-prime-video)
-		hoo-dles-prime-video)
+		hoo-dles-prime-video
 		;;
 	paresh-protonvpn)
 		paresh-protonvpn
