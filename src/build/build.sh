@@ -75,10 +75,28 @@ binarymend-sympfonium(){
 morphe-youtube() {
 	morphe_dl
 	# Patch YouTube:
+	prefer_version="$youtube_experimental_support"
 	get_patches_key "youtube-morphe"
-	get_apk "com.google.android.youtube" "youtube" "apk"
-	patch "youtube" "morphe" "morphe"
+	get_apk "com.google.android.youtube" "youtube-app" "apk"
+	patch "youtube-app" "morphe" "morphe"
 }
+morphe-youtube-music-x86() {
+	morphe_dl
+	# Patch YouTube Music x86:
+	prefer_version="$youtube_music_experimental_support"
+	get_patches_key "youtube-music-morphe"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86" "apk" "x86_64"
+	patch "youtube-music-x86" "morphe" "morphe"
+}
+morphe-youtube-music-arm() {
+	morphe_dl
+	# Patch YouTube Music Arm64-v8a:
+	prefer_version="$youtube_music_experimental_support"
+	get_patches_key "youtube-music-morphe"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm" "apk" "arm64-v8a"
+	patch "youtube-music-arm" "morphe" "morphe"
+}
+
 case "$1" in
     revenge-discord)
         revenge-discord
@@ -101,5 +119,11 @@ case "$1" in
 	binarymend-sympfonium)
 		binarymend-sympfonium
 		;;
-	
+	morphe-youtube-music-x86)
+		morphe-youtube-music-x86
+		;;
+	morphe-youtube-music-arm)
+		morphe-youtube-music-arm
+		;;
+
 esac

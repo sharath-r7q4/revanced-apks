@@ -28,7 +28,7 @@ on:
         required: true
         type: string
 jobs:
-  patch_morphe:
+  patch_morphe_yt:
     name: Patch Morphe (YouTuhe)
     if: ${{ github.event.inputs.org == 'Morphe YouTube' || inputs.org == 'Morphe YouTube' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
@@ -55,6 +55,68 @@ jobs:
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "morphe-youtube"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+  patch_morphe_ytm_x86:
+    name: Patch Morphe (YouTube Music x86)
+    if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "morphe-youtube-music-x86"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+  patch_morphe_ytm_arm:
+    name: Patch Morphe (YouTube Music arm)
+    if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh 
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "morphe-youtube-music-arm"
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
@@ -259,7 +321,7 @@ jobs:
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
   update-releases-file:
-    needs: [patch_morphe, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord]
+    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord]
     name: Update releases file
     permissions: write-all
     if: always()
