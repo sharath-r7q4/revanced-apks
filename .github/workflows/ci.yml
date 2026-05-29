@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       repository: ${{ github.repository }}
+      TDL_BACKUP: ${{ secrets.TDL_BACKUP }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
