@@ -391,6 +391,11 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
       - name: Download and Patch Amazon India
         run: |
           echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
