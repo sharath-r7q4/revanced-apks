@@ -116,6 +116,10 @@
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=smart-launcher",
 			"example_url": "https://www.apkmirror.com/apk/smart-launcher-team/smart-launcher/smart-launcher-6-%e2%80%a7-home-screen-6-6-build-010-release/"
 		},
+		"in.startv.hotstar": {
+			"list_url": "https://www.apkmirror.com/uploads/?appcategory=hotstar-2",
+			"example_url": "https://www.apkmirror.com/apk/jiostar-india-private-limited/hotstar-2/jiohotstar-26-04-27-10-release/"
+		},
 		"jp.pxv.android": {
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=pixiv",
 			"example_url": "https://www.apkmirror.com/apk/pixiv-inc/pixiv/pixiv-6-180-1-release/"

@@ -24,6 +24,10 @@ binarymend_dl(){
 	dl_gh "morphe-cli" "MorpheApp" "latest"
 	dl_gh "morphe-patches" "binarymend" "latest"
 }
+paresh_dl(){
+	dl_gh "morphe-cli" "MorpheApp" "latest"
+	dl_gl "paresh-patches" "Paresh-Maheshwari" "latest"
+}
 revenge-discord() {
 	# Patch Revenge:
 	LSPatch_dl
@@ -59,12 +63,12 @@ hoo-dles-prime-video() {
 	get_apk "com.amazon.avod.thirdpartyclient" "prime-video" "apk" "arm64-v8a" "nodpi" "Android 9.0+"
 	patch "prime-video" "hoo-dles" "morphe"
 }
-hoo-dles-protonvpn() {
-	hoo-dles_dl
+paresh-protonvpn() {
+	paresh_dl
 	#Patch Proton VPN
-	get_patches_key "Proton-VPN-hoo-dles"
+	get_patches_key "Proton-VPN-paresh"
 	get_apk "ch.protonvpn.android" "protonvpn" "apk"
-	patch "protonvpn" "hoo-dles" "morphe"
+	patch "protonvpn" "paresh" "morphe"
 }
 binarymend-sympfonium(){
 	binarymend_dl
@@ -96,7 +100,13 @@ morphe-youtube-music-arm() {
 	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm" "apk" "arm64-v8a"
 	patch "youtube-music-arm" "morphe" "morphe"
 }
-
+paresh-jiohotstar() {
+	paresh_dl
+	# Patch JioHotstar:
+	get_patches_key "jiohotstar-paresh"
+	get_apk "in.startv.hotstar" "jiohotstar" "apk"
+	patch "jiohotstar" "paresh" "morphe"
+}
 case "$1" in
     revenge-discord)
         revenge-discord

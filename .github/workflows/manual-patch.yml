@@ -19,7 +19,8 @@ on:
           - 'Morphe YouTube Music'
           - 'piko X'
           - 'piko Instagram'
-          - 'hoo-dles Proton VPN'
+          - 'Paresh Proton VPN'
+          - 'Paresh JioHotstar'
           - 'hoo-dles Prime Video'
           - 'binarymend Symfonium'
           - 'Revenge Discord'
@@ -208,9 +209,9 @@ jobs:
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
       
-  patch_hoo-dles_protonvpn:
-    name: Patch hoo-dles(ProtonVPN)
-    if: ${{ github.event.inputs.org == 'hoo-dles Proton VPN' || inputs.org == 'hoo-dles Proton VPN' || inputs.org == 'all' }}
+  patch_paresh_protonvpn:
+    name: Patch paresh(ProtonVPN)
+    if: ${{ github.event.inputs.org == 'paresh Proton VPN' || inputs.org == 'paresh Proton VPN' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -235,7 +236,39 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/build/build.sh "hoo-dles-protonvpn"
+        run: bash src/build/build.sh "paresh-protonvpn"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+  patch_paresh_jiohotstar:
+    name: Patch paresh(JioHotstar)
+    if: ${{ github.event.inputs.org == 'paresh JioHotstar' || inputs.org == 'paresh JioHotstar' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "paresh-jiohotstar"
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
@@ -500,7 +533,7 @@ jobs:
         id: release
         uses: ./.github/actions/release
   update-releases-file:
-    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord, Dolphin, Eden, FCL, Geode, Winlator]
+    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Dolphin, Eden, FCL, Geode, Winlator]
     name: Update releases file
     permissions: write-all
     if: always()

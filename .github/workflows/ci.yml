@@ -43,10 +43,14 @@ jobs:
         id: check-hoo-dles-prime-video
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/ci.sh hoo-dles/morphe-patches latest prime-video.*hoo-dles
-      - name: Check new patch hoo-dles Proton VPN
-        id: check-hoo-dles-proton-vpn
+      - name: Check new patch paresh Proton VPN
+        id: check-paresh-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest protonvpn.*hoo-dles
+        run: bash src/etc/ci.sh paresh/morphe-patches latest protonvpn.*paresh
+      - name: Check new patch paresh JioHotstar
+        id: check-paresh-jiohotstar
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh paresh/morphe-patches latest jiohotstar.*paresh
       - name: Check new patch binarymend Symfonium
         id: check-binarymend-symfonium
         if: steps.check-gh.outputs.internet_error == '0'
@@ -96,7 +100,8 @@ jobs:
       check_piko_x: ${{ steps.check-piko-x.outputs.new_patch }}
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
       check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
-      check_hoo-dles_proton-vpn: ${{ steps.check-hoo-dles-proton-vpn.outputs.new_patch }}
+      check_paresh_proton-vpn: ${{ steps.check-paresh-proton-vpn.outputs.new_patch }}
+      check_paresh_jiohotstar: ${{ steps.check-paresh-jiohotstar.outputs.new_patch }}
       check_binarymend_symfonium: ${{ steps.check-binarymend-symfonium.outputs.new_patch }}
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
@@ -143,13 +148,21 @@ jobs:
     with:
       org: "hoo-dles Prime Video"
     secrets: inherit
-  Patch-hoo-dles-proton-vpn:
-    name: Patch hoo-dles Proton VPN
+  Patch-paresh-proton-vpn:
+    name: Patch paresh Proton VPN
     needs: check
-    if: ${{ needs.check.outputs.check_hoo-dles_proton-vpn == 1 }}
+    if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 }}
     uses: ./.github/workflows/manual-patch.yml
     with:
-      org: "hoo-dles Proton VPN"
+      org: "Paresh Proton VPN"
+    secrets: inherit
+  Patch-paresh-jiohotstar:
+    name: Patch paresh JioHotstar
+    needs: check
+    if: ${{ needs.check.outputs.check_paresh_jiohotstar == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "Paresh JioHotstar"
     secrets: inherit
   Patch-binarymend-symfonium:
     name: Patch binarymend Symfonium
