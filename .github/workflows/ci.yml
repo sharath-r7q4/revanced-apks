@@ -149,7 +149,7 @@ jobs:
       org: "hoo-dles Prime Video"
     secrets: inherit
   Patch-paresh-proton-vpn:
-    name: Patch paresh Proton VPN
+    name: Patch Paresh Proton VPN
     needs: check
     if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 }}
     uses: ./.github/workflows/manual-patch.yml
@@ -157,7 +157,7 @@ jobs:
       org: "Paresh Proton VPN"
     secrets: inherit
   Patch-paresh-jiohotstar:
-    name: Patch paresh JioHotstar
+    name: Patch Paresh JioHotstar
     needs: check
     if: ${{ needs.check.outputs.check_paresh_jiohotstar == 1 }}
     uses: ./.github/workflows/manual-patch.yml
