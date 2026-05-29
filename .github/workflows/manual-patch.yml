@@ -16,6 +16,7 @@ on:
         options:
           - 'All'
           - 'Morphe YouTube'
+          - 'Morphe YouTube Music'
           - 'piko X'
           - 'piko Instagram'
           - 'hoo-dles Proton VPN'
