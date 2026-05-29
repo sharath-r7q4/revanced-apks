@@ -111,6 +111,7 @@ paresh-jiohotstar() {
 }
 amazon-india(){
 	get_apk "in.amazon.mShop.android.shopping" "amazon-india" "bundle"
+	java -jar APKEditor.jat m -i amazon-india.apkm
 	sign "amazon-india.apk" "./release/amazon-india-$version.apk"
 }
 dolphin() {
