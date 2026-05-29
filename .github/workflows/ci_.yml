@@ -18,3 +18,10 @@ jobs:
     with:
       org: "Dolphin SDK 29"
     secrets: inherit
+  Patch-Amazon-India:
+    name: Patch Amazon India
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "Amazon India"
+    secrets: inherit
+  
