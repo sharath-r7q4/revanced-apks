@@ -118,10 +118,13 @@ case "$1" in
 		piko-instagram
 		;;
 	hoo-dles-prime-video)
-		hoo-dles-prime-video
+		hoo-dles-prime-video)
 		;;
-	hoo-dles-protonvpn)
-		hoo-dles-protonvpn
+	paresh-protonvpn)
+		paresh-protonvpn
+		;;
+	paresh-jiohotstar)
+		paresh-jiohotstar
 		;;
 	morphe-youtube)
 		morphe-youtube
