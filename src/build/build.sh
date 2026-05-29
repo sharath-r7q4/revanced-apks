@@ -112,7 +112,7 @@ paresh-jiohotstar() {
 amazon-india(){
 	get_apk "in.amazon.mShop.android.shopping" "amazon-india" "bundle"
 	java -jar APKEditor.jar m -i ./download/amazon-india.apkm -o amazon-india.apk
-	sign "amazon-india.apk" "./release/amazon-india-$version.apk"
+	sign "amazon-india.apk" ./release/amazon-india-$version.apk
 }
 dolphin() {
     _fs_get https://dolphin-emu.org/download/
