@@ -14,3 +14,4 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
 - [x-stable-3744301388_7_11.93.0-release-ripped.0.apk-piko-v3.5.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_7_11.93.0-release-ripped.0.apk-piko-v3.5.0-dev.2.apk)
 - [youtube-20.51.39-morphe-v1.30.0-dev.6.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.51.39-morphe-v1.30.0-dev.6.apk)
+- [youtube-music-arm-8.47.56-morphe-v1.30.0-dev.6.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-music-arm-8.47.56-morphe-v1.30.0-dev.6.apk)
