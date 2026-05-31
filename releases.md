@@ -1,6 +1,7 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
 - [Eden-Android-251a3470dc-2026-05-28T20.53.46Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-251a3470dc-2026-05-28T20.53.46Z-pubg.apk)
+- [Eden-Android-bd2d344040-2026-05-31T19.54.18Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-bd2d344040-2026-05-31T19.54.18Z-pubg.apk)
 - [Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk)
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
 - [Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk)
