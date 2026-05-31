@@ -10,7 +10,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [discord-.331.6.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.331.6.-.Beta.-revenge.apk)
 - [dolphin-master-2603-379-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-379-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
-- [instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.2.apk)
+- [instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.4.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.4.apk)
 - [jiohotstar-26.04.27.10-paresh-v1.9.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/jiohotstar-26.04.27.10-paresh-v1.9.0.apk)
 - [prime-video-3.0.452-hoo-dles-v1.34.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/prime-video-3.0.452-hoo-dles-v1.34.0.apk)
 - [protonvpn-5.17.72.0-paresh-v1.9.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-paresh-v1.9.0.apk)
