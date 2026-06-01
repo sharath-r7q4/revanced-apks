@@ -35,6 +35,9 @@ on:
       org:
         required: true
         type: string
+    secrets:
+      TDL_BACKUP:
+        required: true
 jobs:
   patch_morphe_yt:
     name: Patch Morphe (YouTuhe)
