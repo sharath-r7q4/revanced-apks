@@ -66,13 +66,10 @@ hoo-dles-prime-video() {
 	patch "prime-video" "hoo-dles" "morphe"
 }
 paresh-protonvpn() {
-	dl_gh "android-app" "ProtonVPN" "latest"
-	mv  *.apk download/protonvpn.apk
-	version=$release_name
 	paresh_dl
 	#Patch Proton VPN
 	get_patches_key "Proton-VPN-paresh"
-	#get_apk "ch.protonvpn.android" "protonvpn" "apk"
+	get_apk "ch.protonvpn.android" "protonvpn" "bundle"
 	patch "protonvpn" "paresh" "morphe"
 }
 binarymend-sympfonium(){
