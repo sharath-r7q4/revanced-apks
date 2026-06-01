@@ -46,11 +46,11 @@ jobs:
       - name: Check new patch paresh Proton VPN
         id: check-paresh-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh paresh/morphe-patches latest protonvpn.*paresh
+        run: bash src/etc/_ci.sh paresh/morphe-patches latest protonvpn.*paresh
       - name: Check new patch paresh JioHotstar
         id: check-paresh-jiohotstar
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh paresh/morphe-patches latest jiohotstar.*paresh
+        run: bash src/etc/_ci.sh paresh/morphe-patches latest jiohotstar.*paresh
       - name: Check new patch binarymend Symfonium
         id: check-binarymend-symfonium
         if: steps.check-gh.outputs.internet_error == '0'
@@ -116,7 +116,6 @@ jobs:
     secrets: inherit
     with:
       org: "Morphe YouTube"
-    secrets: inherit
   Patch-Morphe-YouTube-Music:
     name: Patch Morphe YouTube Music
     needs: check
@@ -125,7 +124,6 @@ jobs:
     secrets: inherit
     with:
       org: "Morphe YouTube Music"
-    secrets: inherit
   Patch-Piko-X:
     name: Patch Piko(X)
     needs: check
@@ -134,7 +132,6 @@ jobs:
     secrets: inherit
     with:
       org: "piko X"
-    secrets: inherit
   Patch-Piko-Instagram:
     name: Patch Piko(Instagram)
     needs: check
@@ -143,7 +140,6 @@ jobs:
     secrets: inherit
     with:
       org: "piko Instagram"
-    secrets: inherit
   Patch-hoo-dles-prime-video:
     name: Patch hoo-dles Prime Video
     needs: check
@@ -152,7 +148,6 @@ jobs:
     secrets: inherit
     with:
       org: "hoo-dles Prime Video"
-    secrets: inherit
   Patch-paresh-proton-vpn:
     name: Patch Paresh Proton VPN
     needs: check
@@ -161,7 +156,6 @@ jobs:
     secrets: inherit
     with:
       org: "Paresh Proton VPN"
-    secrets: inherit
   Patch-paresh-jiohotstar:
     name: Patch Paresh JioHotstar
     needs: check
@@ -170,7 +164,6 @@ jobs:
     secrets: inherit
     with:
       org: "Paresh JioHotstar"
-    secrets: inherit
   Patch-binarymend-symfonium:
     name: Patch binarymend Symfonium
     needs: check
@@ -179,7 +172,6 @@ jobs:
     secrets: inherit
     with:
       org: "binarymend Symfonium"
-    secrets: inherit
   Patch-FCL:
     name: Patch FCL
     needs: check
@@ -188,7 +180,6 @@ jobs:
     secrets: inherit
     with:
       org: "FCL CoD"
-    secrets: inherit
   Patch-Geode:
     name: Patch Geode
     needs: check
@@ -197,7 +188,6 @@ jobs:
     secrets: inherit
     with:
       org: "Geode PUBGKR"
-    secrets: inherit
   Patch-Eden-PUBG:
     name: Patch Eden(PUBG)
     needs: check
