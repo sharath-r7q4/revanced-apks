@@ -47,6 +47,10 @@ jobs:
         id: check-paresh-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/_ci.sh Paresh-Maheshwari/paresh-patches latest protonvpn.*paresh
+      - name: Check new app Proton VPN
+        id: check-app-proton-vpn
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh ProtonVPN/android-app latest protonvpn.*paresh
       - name: Check new patch paresh JioHotstar
         id: check-paresh-jiohotstar
         if: steps.check-gh.outputs.internet_error == '0'
@@ -101,6 +105,7 @@ jobs:
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
       check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
       check_paresh_proton-vpn: ${{ steps.check-paresh-proton-vpn.outputs.new_patch }}
+      check_app_proton-vpn: ${{ steps.check-app-proton-vpn.outputs.new_patch }}
       check_paresh_jiohotstar: ${{ steps.check-paresh-jiohotstar.outputs.new_patch }}
       check_binarymend_symfonium: ${{ steps.check-binarymend-symfonium.outputs.new_patch }}
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
@@ -151,7 +156,7 @@ jobs:
   Patch-paresh-proton-vpn:
     name: Patch Paresh Proton VPN
     needs: check
-    if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 }}
+    if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 || needs.check.outputs.check_app_proton-vpn == 1 }}
     uses: ./.github/workflows/manual-patch.yml
     secrets: inherit
     with:
