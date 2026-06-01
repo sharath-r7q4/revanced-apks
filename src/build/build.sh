@@ -69,6 +69,8 @@ paresh-protonvpn() {
 	paresh_dl
 	#Patch Proton VPN
 	get_patches_key "Proton-VPN-paresh"
+	_fs_get https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/
+	version=$(curl -s https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | grep -v - | head -n 1
 	get_apk "ch.protonvpn.android" "protonvpn" "bundle"
 	patch "protonvpn" "paresh" "morphe"
 }
