@@ -46,11 +46,11 @@ jobs:
       - name: Check new patch paresh Proton VPN
         id: check-paresh-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/_ci.sh paresh/morphe-patches latest protonvpn.*paresh
+        run: bash src/etc/_ci.sh Paresh-Maheswari/morphe-patches latest protonvpn.*paresh
       - name: Check new patch paresh JioHotstar
         id: check-paresh-jiohotstar
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/_ci.sh paresh/morphe-patches latest jiohotstar.*paresh
+        run: bash src/etc/_ci.sh Paresh-Maheswari/morphe-patches latest jiohotstar.*paresh
       - name: Check new patch binarymend Symfonium
         id: check-binarymend-symfonium
         if: steps.check-gh.outputs.internet_error == '0'
